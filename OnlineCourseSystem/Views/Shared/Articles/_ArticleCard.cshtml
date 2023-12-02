@@ -1,0 +1,23 @@
+﻿@using OnlineCourseSystem.ViewModels.Article
+@model ArticleViewModel
+
+
+<div class="blog grid-blog">
+	<div class="blog-image">
+		<a asp-route-id="@Model.Id" asp-action="Article" asp-controller="Home">
+			<img class="img-fluid" src="@Model.ImageUrl" alt="Article Image" style="max-height:350px">
+		</a>
+	</div>
+	<div class="blog-content">
+		<ul class="entry-meta meta-item">
+			<li>
+				<div class="post-author">
+					<a asp-route-id="@Model.Id" asp-action="Article" asp-controller="Home"><span>@Model.AuthorName</span></a>
+				</div>
+			</li>
+			<li><i class="far fa-clock"></i> @Model.PublishedDateString</li>
+		</ul>
+		<h3 class="blog-title"><a asp-route-id="@Model.Id" asp-action="Article" asp-controller="Home">@Model.Title</a></h3>
+		<p class="mb-0">@Html.Raw(@Model.ShortDescription)</p>
+	</div>
+</div>

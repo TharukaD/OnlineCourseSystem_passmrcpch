@@ -1,0 +1,63 @@
+﻿@using OnlineCourseSystem.ViewModels;
+@model ArticlesPageViewModel
+
+<div class="col-lg-4 col-md-12 sidebar-right theiaStickySidebar">
+	<!-- Search -->
+	@*<div class="card search-widget">
+		<div class="card-body">
+			<form class="search-form">
+				<div class="input-group">
+					<input type="text" placeholder="Search..." class="form-control">
+					<button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+				</div>
+			</form>
+		</div>
+	</div>*@
+	<!-- /Search -->
+	<!-- Latest Posts -->
+	<div class="card post-widget">
+		<div class="card-header">
+			<h4 class="card-title">Latest Posts</h4>
+		</div>
+		<div class="card-body">
+			<ul class="latest-posts">
+				@foreach (var latestArticle in Model.LatestArticles)
+				{
+					<partial model="@latestArticle" name="/Views/Shared/Articles/_ArticleListItem.cshtml" />
+				}					
+			</ul>
+		</div>
+	</div>
+	<!-- /Latest Posts -->
+	<!-- Categories -->
+	<div class="card category-widget">
+		<div class="card-header">
+			<h4 class="card-title">Blog Categories</h4>
+		</div>
+		<div class="card-body">
+			<ul class="categories">
+				@foreach(var category in Model.Categories)
+				{
+					<li><a href="#">@category.Name</a></li>
+				}
+			</ul>
+		</div>
+	</div>
+	<!-- /Categories -->
+	<!-- Tags -->
+	<div class="card tags-widget">
+		<div class="card-header">
+			<h4 class="card-title">Tags</h4>
+		</div>
+		<div class="card-body">
+			<ul class="tags">
+				@foreach(var tag in Model.Tags)
+				{
+					<li><a href="#" class="tag">@tag.Name</a></li>
+				}
+			</ul>
+		</div>
+	</div>
+	<!-- /Tags -->
+
+</div>

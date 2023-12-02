@@ -1,12 +1,249 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using OnlineCourseSystem.ViewModels
+@model HomePageViewModel
+@{
+    ViewData["Title"] = "MRPC";
+    var banners = @Html.Raw(Json.Serialize(Model.Banners));
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!-- Home Banner -->
+<section class="banner-section d-flex align-items-center homeBackgroundImage" style="height:90vh;" id="HomeBannerSectionId">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="banner-content aos" data-aos="fade-up">
+                    <h1 class="mt-md-5" id="HomeBannerTitleId">Consult Best Doctors Your Nearby Location.</h1>
+                    <p id="HomeBannerDescriptionId">Feel free to contact us, get better service.</p>
+                    <a asp-controller="Home" asp-action="Register" style="background-color: #06A5A0;border-color:#06A5A0 !important;" class="btn specialHomeBtn"><span style="margin-right:5px;">Enroll now</span> <i class="fa fa-arrow-right"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /Home Banner -->
 
+<!-- About Us -->
+<section class="section section-specialities">
+    <div class="container-fluid">
+        <div class="row p-2 p-md-5">
+            <div class="col-md-7">
+                <div class="section-header text-center aos" data-aos="fade-up">
+                    <div class="section-header-fourteen">
+                        <h2>About Us</h2>
+                        <p class="px-lg-5">
+                            VitalCare is a multispecialty medical company that integrates medical specialties,
+                            comprehensive dental care, diagnostic laboratories and pharmaceuticals.
+                            Our story begins from October of 2011. Back then we were a clinic with a single dental unit in the capital city of Male’.
+                            Vitalcare was established by doctors with a dream of advancing quality healthcare, and to help ensure that people’s health is protected
+                        </p>
+                    </div>
+                </div>
+            </div> 
+            <div class="col-md-5 text-center">
+                <img src="~/assets/img/about-images/Image-3.jpg" class="img-fluid" alt="about-image" style="max-height:300px;">
+            </div>
+        </div>
+        <div class="row">
+            <div class="banner-content aos d-flex justify-content-center" data-aos="fade-up" style="margin-top:20px;padding-bottom:0px !important">
+                <a asp-controller="Home" asp-action="AboutUs" style="background-color: #06A5A0;border-color:#06A5A0 !important;" class="btn specialHomeBtn">Read More</a>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /About Us -->
+
+
+<!-- Counter Section -->
+<section class="counter-section">
+    <div class="ban-bg">
+        <img src="~/assets/img/bg/counter-bg.png" alt="design-image" class="img-fluid bg-06">
+    </div>
+    <div class="container">
+        <div class="row">
+            @foreach (var record in Model.CounterRecords)
+            {
+                <div class="col-lg-3 col-sm-6">
+                    <div class="count-box">
+                        <span class="count-icon">
+                            <img src="@record.ImageUrl" alt="doctor-image" style="max-width:60px; max-height:60px;" class="img-fluid">
+                        </span>
+                        <div class="count-info">
+                            <h3><span class="count-digit">@record.CountInfo</span> +</h3>
+                            <p>@record.Name</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+<!-- /Counter Section -->
+
+<!-- Services Section -->
+<section class="services-section-fourteen">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 aos" data-aos="fade-up">
+                <div class="section-header-fourteen">
+                    <h2>Our Services</h2>
+                    <p>We provide best services</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row d-flex justify-content-center" data-aos="fade-up">
+            @foreach (var brand in @Model.Services)
+            {
+                <div class="col-md-6 col-lg-3 col-sm-6 aos px-sm-3 px-5" data-aos="fade-up">
+                    <div class="blog grid-blog row" style="background-color:#f9fafb !important">
+                        <div class="blog-image">
+                            <img class="img-fluid px-3 px-sm-1 px-md-0" src="@brand.ImageUrl" height="100" width="100" alt="Post Image">
+                        </div>
+                        <div class="blog-content">
+                            <h3 class="blog-title">
+                                <a>
+                                    @brand.Name
+                                </a>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="row">
+            <div class="banner-content aos d-flex justify-content-center" data-aos="fade-up" style="margin-top:20px;padding-bottom:0px !important">
+                <a asp-controller="Home" asp-action="Services" style="background-color: #06A5A0;border-color:#06A5A0 !important;" class="btn specialHomeBtn">View More</a>
+            </div>
+        </div>
+
+    </div>
+</section>
+<!-- /Services Section -->
+
+<!-- Testimonial Section -->
+<section class="testimonial-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 ">
+                <div class="testimonial-slider slick">
+                    <div class="testimonial-grid divHeight">
+                        <div class="testimonial-info">
+                            <div class="testimonial-content">
+                                <div class="section-header section-inner-header testimonial-header">
+                                    <h2 class="text-center">What Our Students Says</h2>
+                                </div>
+                                <div class="testimonial-details mx-2 mx-sm-5">
+                                    <p class="text-center">
+                                        “This Clinic is always known to be the best dental clinic in town.
+                                        They have dentist with great clinical experties and dedicated staff with excellent customer care.
+                                        Always a pleasure to book regular check up appointments here. Keep it up.”
+                                    </p>
+                                    <h6 class="text-center"><span>Ahmed Razzaq</span> <i>( Happy Customer )</i></h6>
+                                    <div class="rating mt-2 text-center">
+                                        <i class="fas fa-star filled"></i>
+                                        <i class="fas fa-star filled"></i>
+                                        <i class="fas fa-star filled"></i>
+                                        <i class="fas fa-star filled"></i>
+                                        <i class="fas fa-star "></i>
+                                        <span>4</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-grid divHeight">
+                        <div class="testimonial-info">
+                            <div class="testimonial-content">
+                                <div class="section-header section-inner-header testimonial-header">
+                                    <h2 class="text-center">What Our Students Says</h2>
+                                </div>
+                                <div class="testimonial-details mx-2 mx-sm-5">
+                                    <p class="text-center">
+                                        “if you are looking for the best dental clinic in Maldives, this is definitely
+                                        the number one dental i would recommend. Their team of doctors are most established
+                                        and longest in service in Maldives, and their staff are the most dedicated.
+                                        The services in vitalcare dental are nothing comparable, their prices are a relief and
+                                        last but most exciting their interior has got every corner for a selfie”
+                                    </p>
+                                    <h6 class="text-center"><span>Dhaina Saeed</span> <i>( Happy Customer )</i></h6>
+                                    <div class="rating mt-2 text-center">
+                                        <i class="fas fa-star filled"></i>
+                                        <i class="fas fa-star filled"></i>
+                                        <i class="fas fa-star filled"></i>
+                                        <i class="fas fa-star filled"></i>
+                                        <i class="fas fa-star "></i>
+                                        <span>4</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-grid divHeight">
+                        <div class="testimonial-info">
+                            <div class="testimonial-content">
+                                <div class="section-header section-inner-header testimonial-header">
+                                    <h2 class="text-center">What Our Students Says</h2>
+                                </div>
+                                <div class="testimonial-details mx-2 mx-sm-5">
+                                    <p class="text-center">
+                                        “An excellent clinic with a wonderful and warm experience from the start to finish.
+                                        The staff are very friendly and the customer care in this clinic is very good.
+                                        I especially loved how the staff and the doctors took their time to explain my conditions
+                                        with me as well as my treatment options. I had a great time and the doctors demeanor has really put me in ease so,
+                                        i highly recommend this clinic and the doctors are very experienced and i will definitely consult here again”
+                                    </p>
+                                    <h6 class="text-center"><span>Shua Abdulla</span> <i>( Happy Customer )</i></h6>
+                                    <div class="rating mt-2 text-center">
+                                        <i class="fas fa-star filled"></i>
+                                        <i class="fas fa-star filled"></i>
+                                        <i class="fas fa-star filled"></i>
+                                        <i class="fas fa-star filled"></i>
+                                        <i class="fas fa-star filled"></i>
+                                        <span>4</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /Testimonial Section -->
+
+<!-- Articles Section -->
+<section class="section section-blogs">
+    <div class="container-fluid">
+
+        <!-- Section Header -->
+        <div class="section-header text-center aos" data-aos="fade-up">
+            <h2>Articles</h2>
+            <p class="sub-title">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                incididunt ut labore et dolore magna aliqua.
+            </p>
+        </div>
+        <!-- /Section Header -->
+
+        <div class="row blog-grid-row">
+            @foreach (var article in Model.Articles)
+            {
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <partial name="/Views/Shared/Articles/_ArticleCard.cshtml" model="@article" />
+                </div>
+            }
+        </div>
+        <div class="view-all text-center aos" data-aos="fade-up">
+            <a href="/Home/Articles" class="btn btn-primary specialHomeBtn">View All</a>
+        </div>
+    </div>
+</section>
+<!-- /Blog Section -->
 
 <style>
 
@@ -33,3 +270,101 @@
     }
 
 </style>
+
+<style>
+
+    .slick-prev:hover, .slick-prev:focus, .slick-next:hover, .slick-next:focus {
+        background-color: #06A5A0 !important;
+        border-color: #06A5A0 !important;
+    }
+
+    .owl-prev:hover, .owl-prev:focus, .owl-next:hover {
+        background-color: #06A5A0 !important;
+        border-color: #06A5A0 !important;
+    }
+
+    .specialHomeBtn {
+        background-color: #06A5A0;
+        border-color: #06A5A0 !important;
+    }
+
+    .specialHomeBtn:hover {
+        color: #06A5A0 !important;
+        background-color: white !important;
+        border-color: #06A5A0 !important
+    }
+
+    .service-icon {
+        background-color: #06A5A0 !important;
+    }
+
+    .serviceCard:hover {
+        background-color: #06A5A0 !important;
+        border-color: #06A5A0 !important;
+    }
+
+    .serviceCard:hover .service-icon {
+        background-color: white !important;
+    }
+
+    .nav-pills > li > button {
+        color: #4D555F !important;
+        border: 1px solid #06A5A0;
+    }
+
+    .nav-pills > li > button.active {
+        background-color: #06A5A0 !important;
+        color: white !important;
+    }
+
+    .doctorNameText:hover {
+        color: #06A5A0 !important;
+    }
+
+</style>
+
+@section Scripts {
+    <script>
+
+        const banners = @banners;
+
+        let counter = 1;
+        const arrayLength = banners.length;
+
+        const windowWidth = $(window).width();
+        let firstImage = "url(" + banners[0].largeImageUrl + ")";
+        if(windowWidth < 640){
+            firstImage = "url(" + banners[0].smallImageUrl + ")";
+        }
+
+        $('#HomeBannerSectionId').css({ 'backgroundImage': firstImage, 'background-repeat': 'no-repeat', 'background-size': "cover" });
+        $("#HomeBannerTitleId").text(banners[0].title);
+        $("#HomeBannerTitleId").css({ 'color': banners[0].textColor });
+
+        function changeBg(pageWidth){
+            const index = counter % arrayLength;
+            let bgImage = "url(" + banners[index].largeImageUrl + ")";
+            if (pageWidth < 640) {
+                bgImage = "url(" + banners[index].smallImageUrl + ")";
+            }
+
+            $('#HomeBannerSectionId').css({ 'backgroundImage': bgImage, 'background-repeat': 'no-repeat', 'background-size': "cover" });
+
+            $("#HomeBannerTitleId").text(banners[index].title);
+            $("#HomeBannerTitleId").css({ 'color': banners[index].textColor });
+
+            $("#HomeBannerDescriptionId").text(banners[index].description);
+            $("#HomeBannerDescriptionId").css({ 'color': banners[index].textColor });
+
+            counter += 1;
+        }
+
+        let bgChangeInterval = setInterval(() => changeBg(windowWidth), 5000)
+
+        $(window).resize(function () {
+            clearInterval(bgChangeInterval);
+            bgChangeInterval = setInterval(() => changeBg($(window).width()), 5000)
+        });
+
+    </script>
+}

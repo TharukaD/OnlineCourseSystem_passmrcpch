@@ -4,7 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using OnlineCourseSystem;
 using OnlineCourseSystem.Data;
 using OnlineCourseSystem.Middleware;
-using OnlineCourseSystem.Services;
+using OnlineCourseSystem.Services.Article;
+using OnlineCourseSystem.Services.ArticleCategory;
+using OnlineCourseSystem.Services.CounterRecord;
+using OnlineCourseSystem.Services.HomePageBanner;
+using OnlineCourseSystem.Services.Serivice;
+using OnlineCourseSystem.Services.Tag;
 using static OnlineCourseSystem.Constants.ModelConstants;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,7 +30,12 @@ builder.Services.AddControllersWithViews(options => options.SuppressImplicitRequ
 builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 
 //----- Services Manage
+builder.Services.AddScoped<ITagService, TagService>();
+builder.Services.AddScoped<IArticleCategoryService, ArticleCategoryService>();
+builder.Services.AddScoped<IArticleService, ArticleService>();
 builder.Services.AddScoped<IServiceService, ServiceService>();
+builder.Services.AddScoped<IHomePageBannerService, HomePageBannerService>();
+builder.Services.AddScoped<ICounterRecordService, CounterRecordService>();
 
 //---- Mapper Configuration
 IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();

@@ -1,4 +1,4 @@
-﻿namespace OnlineCourseSystem.Services;
+﻿namespace OnlineCourseSystem.Services.Serivice;
 using OnlineCourseSystem.Entities;
 public interface IServiceService
 {

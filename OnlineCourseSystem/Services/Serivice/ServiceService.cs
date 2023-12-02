@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OnlineCourseSystem.Data;
 
-namespace OnlineCourseSystem.Services;
+namespace OnlineCourseSystem.Services.Serivice;
 
 public class ServiceService : IServiceService
 {

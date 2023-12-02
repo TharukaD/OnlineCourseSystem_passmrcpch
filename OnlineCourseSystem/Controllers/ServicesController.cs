@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using OnlineCourseSystem.Entities;
-using OnlineCourseSystem.Services;
+using OnlineCourseSystem.Services.Serivice;
 using OnlineCourseSystem.ViewModels;
 using OnlineCourseSystem.ViewModels.Service;
 

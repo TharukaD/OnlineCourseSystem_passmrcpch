@@ -1,0 +1,53 @@
+﻿@if(User.Identity != null && User.Identity.IsAuthenticated){
+    <div>
+        <a style="font-size:15px;">@User.Identity.Name</a>
+        <a class="btn btn-primary loginBtn btn-sm" onclick="document.getElementById('logOutForm').submit()">
+            Logout
+            <span class="fa fa-sign-in" style="margin-left:3px;"></span>
+        </a>
+        <form class="form-inline d-none" id="logOutForm" asp-area="Identity" asp-page="/Account/Logout"
+              asp-route-returnUrl="@Url.Action("Index", "Home", new {area = ""})">
+        </form>
+    </div>
+}
+else{
+    <div class="d-flex gap-1">
+        <a class="btn btn-secondary registerBtn btn-sm" asp-area="Identity" asp-page="/Account/Register">
+            Register
+            <span class="fa fa-user" style="margin-left:3px;"></span>
+        </a>
+        <a class="btn btn-primary loginBtn btn-sm" style="margin-left:7px;" asp-area="Identity" asp-page="/Account/Login">
+            Login
+            <span class="fa fa-sign-in" style="margin-left:3px;"></span>
+        </a>
+    </div>
+}
+
+
+<style>
+
+    .loginBtn {
+        background-color: #06A5A0;
+        border-color: #06A5A0 !important;
+    }
+
+    .loginBtn:hover {
+        color: white !important;
+        background-color: #75CBC9;
+        border-color: #06A5A0 !important
+    }
+
+    .registerBtn {
+        background-color: #3D3D3D;
+        border-color: #3D3D3D !important;
+    }
+
+    .registerBtn:hover {
+        color: white !important;
+        background-color: #666666;
+        border-color: #3D3D3D !important
+    }
+
+</style>
+
+
