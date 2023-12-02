@@ -1,9 +1,12 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using OnlineCourseSystem.Entities;
 using OnlineCourseSystem.Services.Article;
 using OnlineCourseSystem.Services.ArticleCategory;
 using OnlineCourseSystem.Services.CounterRecord;
+using OnlineCourseSystem.Services.EmailService;
 using OnlineCourseSystem.Services.HomePageBanner;
+using OnlineCourseSystem.Services.Inquiry;
 using OnlineCourseSystem.Services.Serivice;
 using OnlineCourseSystem.Services.Tag;
 using OnlineCourseSystem.ViewModels;
@@ -11,6 +14,7 @@ using OnlineCourseSystem.ViewModels.Article;
 using OnlineCourseSystem.ViewModels.ArticleCategory;
 using OnlineCourseSystem.ViewModels.CounterRecord;
 using OnlineCourseSystem.ViewModels.HomePageBanner;
+using OnlineCourseSystem.ViewModels.Inquiry;
 using OnlineCourseSystem.ViewModels.Service;
 using OnlineCourseSystem.ViewModels.Tag;
 
@@ -26,6 +30,9 @@ namespace OnlineCourseSystem.Controllers
         private IArticleService _articleService;
         private ITagService _tagService;
         private IArticleCategoryService _articleCategoryService;
+        private IInquiryService _inquiryService;
+        private IEmailService _emailService;
+        private readonly IConfiguration _configuration;
 
         public HomeController(
             IMapper mapper,
@@ -35,7 +42,10 @@ namespace OnlineCourseSystem.Controllers
             ICounterRecordService counterRecordService,
             IArticleService articleService,
             ITagService tagService,
-            IArticleCategoryService articleCategoryService
+            IArticleCategoryService articleCategoryService,
+            IInquiryService inquiryService,
+            IEmailService emailService,
+            IConfiguration configuration
         )
         {
             _mapper = mapper;
@@ -46,6 +56,9 @@ namespace OnlineCourseSystem.Controllers
             _articleService = articleService;
             _tagService = tagService;
             _articleCategoryService = articleCategoryService;
+            _inquiryService = inquiryService;
+            _emailService = emailService;
+            _configuration = configuration;
         }
 
         [HttpGet]
@@ -148,6 +161,92 @@ namespace OnlineCourseSystem.Controllers
         {
             return View();
         }
+
+        #region Inquiry
+        [HttpGet]
+        public IActionResult InquirySuccess(int id)
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult InquiryFailed()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateInquery(CreateInquiryViewModel viewModel)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return RedirectToAction("ContactUs");
+                }
+
+                var inquiry = _mapper.Map<Inquiry>(viewModel);
+                inquiry.CreatedOn = DateTime.Now;
+
+                await _inquiryService.Add(inquiry);
+                var inquiryViewModel = _mapper.Map<InquiryViewModel>(inquiry);
+
+                SendInquiryMailWhenCreated(inquiryViewModel);
+
+                return RedirectToAction("InquirySuccess");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return RedirectToAction("AppoinmentFailed");
+            }
+        }
+
+
+        private void SendInquiryMailWhenCreated(InquiryViewModel viewModel)
+        {
+            var emailBody =
+                $"<table style=\"border: 1px solid; border-collapse: collapse; width:100%\">" +
+                    $"<tr style=\"border: 1px solid\">" +
+                         $"<td style=\"border: 1px solid; padding: 7px\">Name</td>" +
+                         $"<td style=\"border: 1px solid; padding: 7px\">{viewModel.Name}</td>" +
+                    $"</tr>" +
+                    $"<tr style=\"border: 1px solid\">" +
+                         $"<td style=\"border: 1px solid; padding: 7px\">Email Address</td>" +
+                         $"<td style=\"border: 1px solid; padding: 7px\">{viewModel.EmailAddress}</td>" +
+                    $"</tr>" +
+                    $"<tr style=\"border: 1px solid\">" +
+                         $"<td style=\"border: 1px solid; padding: 7px\">Phone Number</td>" +
+                         $"<td style=\"border: 1px solid; padding: 7px\">{viewModel.PhoneNo}</td>" +
+                    $"</tr>" +
+                    $"<tr style=\"border: 1px solid\">" +
+                         $"<td style=\"border: 1px solid; padding: 7px\">Message</td>" +
+                         $"<td style=\"border: 1px solid; padding: 7px\">{viewModel.Message}</td>" +
+                    $"</tr>" +
+                    $"<tr style=\"border: 1px solid\">" +
+                         $"<td style=\"border: 1px solid; padding: 7px\">Created Date</td>" +
+                         $"<td style=\"border: 1px solid; padding: 7px\">{viewModel.CreatedOnString}</td>" +
+                    $"</tr>" +
+                $"</table>";
+
+            var emailHTML = _emailService.GetHTMLEmailContent(
+                "Inquiry Request",
+                emailBody
+            );
+
+            string emailAddress = _configuration["RedirectMailAddress"];
+
+            var isEmailSent = _emailService.SendEmail(
+                new EmailDto
+                {
+                    To = emailAddress,
+                    Subject = "Inquiry Request",
+                    Body = emailHTML
+                });
+        }
+
+
+        #endregion
 
     }
 }

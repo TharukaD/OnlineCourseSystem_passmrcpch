@@ -5,6 +5,7 @@ using OnlineCourseSystem.ViewModels.Article;
 using OnlineCourseSystem.ViewModels.ArticleCategory;
 using OnlineCourseSystem.ViewModels.CounterRecord;
 using OnlineCourseSystem.ViewModels.HomePageBanner;
+using OnlineCourseSystem.ViewModels.Inquiry;
 using OnlineCourseSystem.ViewModels.Service;
 using OnlineCourseSystem.ViewModels.Tag;
 namespace OnlineCourseSystem;
@@ -51,6 +52,12 @@ public class MappingConfig
                 .ForMember(r => r.ImageUrl, opt => opt.MapFrom(src => HelperMethods.ReturnArticleImagePath(src.Image)))
                 .ForMember(r => r.Tags, opt => opt.MapFrom(src => src.ArticleTags.Select(r => new TagViewModel { Id = r.Id, Name = r.Tag.Name })));
             config.CreateMap<Article, AddEditArticleViewModel>().ReverseMap();
+            #endregion
+
+            #region Inquiry
+            config.CreateMap<Inquiry, InquiryViewModel>()
+                .ForMember(r => r.CreatedOnString, opt => opt.MapFrom(src => HelperMethods.ToDateTimeString(src.CreatedOn)));
+            config.CreateMap<CreateInquiryViewModel, Inquiry>();
             #endregion
 
         });

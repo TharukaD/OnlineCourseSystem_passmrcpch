@@ -214,3 +214,17 @@
     }
 
 </style>
+
+@section Scripts {
+    <script>
+
+        $('#CreateInqueryFormId').submit(function () {
+            $(this).find("button[type='submit']").prop('disabled', true);
+        });
+
+        $('#CreateInqueryFormId').change(function () {
+            $('#SubmitButtonId').prop('disabled', false);
+        });
+
+    </script>
+}

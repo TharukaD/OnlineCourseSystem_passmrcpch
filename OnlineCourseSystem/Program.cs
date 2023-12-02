@@ -7,12 +7,18 @@ using OnlineCourseSystem.Middleware;
 using OnlineCourseSystem.Services.Article;
 using OnlineCourseSystem.Services.ArticleCategory;
 using OnlineCourseSystem.Services.CounterRecord;
+using OnlineCourseSystem.Services.EmailService;
 using OnlineCourseSystem.Services.HomePageBanner;
+using OnlineCourseSystem.Services.Inquiry;
 using OnlineCourseSystem.Services.Serivice;
 using OnlineCourseSystem.Services.Tag;
+using VitalCareWeb.Extensions;
 using static OnlineCourseSystem.Constants.ModelConstants;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//-- configure email
+builder.Services.ConfigureEmailService(builder.Configuration);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -36,6 +42,8 @@ builder.Services.AddScoped<IArticleService, ArticleService>();
 builder.Services.AddScoped<IServiceService, ServiceService>();
 builder.Services.AddScoped<IHomePageBannerService, HomePageBannerService>();
 builder.Services.AddScoped<ICounterRecordService, CounterRecordService>();
+builder.Services.AddScoped<IInquiryService, InquiryService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 //---- Mapper Configuration
 IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();

@@ -19,6 +19,7 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<Service> Services { get; set; }
     public DbSet<CounterRecord> CounterRecords { get; set; }
     public DbSet<HomePageBanner> HomePageBanners { get; set; }
+    public DbSet<Inquiry> Inquiries { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -32,5 +33,6 @@ public class ApplicationDbContext : IdentityDbContext
         modelBuilder.ApplyConfiguration(new ServiceConfiguration());
         modelBuilder.ApplyConfiguration(new CounterRecordConfiguration());
         modelBuilder.ApplyConfiguration(new HomePageBannerConfiguration());
+        modelBuilder.ApplyConfiguration(new InquiryConfiguration());
     }
 }
