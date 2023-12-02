@@ -30,8 +30,7 @@
        data-ajax-complete="unblockUI"
        data-toggle="tooltip"
        asp-action="Add"
-       asp-controller="Services"
-       title="New Service">
+       asp-controller="Services">
        <i class="fa fa-plus-circle" style="margin-right:5px;font-size:17px;"></i>
         New
     </a>
@@ -69,13 +68,13 @@
                                                         data-toggle="tooltip"
                                                         asp-action="UploadServiceImage"
                                                         asp-controller="Services"
-                                                        asp-route-id="@service.Id"
-                                                        title="Upload Image"><i class="fa fa-upload"> Upload</i></a>
+                                                        asp-route-id="@service.Id">
+                                                        <i class="fa fa-upload"> Upload</i></a>
                                                 </div>
                                                 
                                             </td>
-                                            <td> @service.Name</td>
-                                            <td> @service.ShortDescription</td>
+                                            <td>@service.Name</td>
+                                            <td>@service.ShortDescription</td>
                                             <td>
                                                 <span class="d-inline-block text-truncate" style="max-width:350px;">
                                                     @service.LongDescription
@@ -91,8 +90,7 @@
                                                        data-toggle="tooltip"
                                                        asp-action="Edit"
                                                        asp-controller="Services"
-                                                        asp-route-id="@service.Id"
-                                                       title="Edit Service">Edit</a>
+                                                       asp-route-id="@service.Id">Edit</a>
                                                     <span> | </span>
                                                     <a data-ajax="true"
                                                         data-ajax-update="#DivModalTarget"
@@ -101,8 +99,7 @@
                                                         data-toggle="tooltip"
                                                         asp-action="Delete"
                                                         asp-controller="Services"
-                                                        asp-route-id="@service.Id"
-                                                        title="Delete Service">
+                                                        asp-route-id="@service.Id">
                                                         <span class="text-danger">Delete</span>
                                                     </a>
                                                 </div>
