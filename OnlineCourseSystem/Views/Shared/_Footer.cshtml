@@ -1,0 +1,102 @@
+﻿@using static OnlineCourseSystem.Constants.ModelConstants
+@{
+    int currentYear = DateTime.Now.Year;
+}
+<footer class="footer footer-one footer-fourteen footer-twelve p-2">
+    <div class="footer-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-12">
+                    <div class="footer-widget footer-about">
+                        <div class="footer-logo">
+                           @*  <a href="index-10.html"><img src="~/assets/img/VitalcareLogo.png" alt="logo"></a> *@
+                            <partial name="_LogoView" />
+                        </div>
+                        <div class="footer-about-content">
+                            <p>
+                                Passmrcpch is an online education platform that specializes in helping aspiring paediatric doctors 
+                                master their clinical skills and pass the Membership of the 
+                                Royal College of Paediatrics and Child Health .MRCPCH. exam on their first attempt.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                    <div class="row">
+                        <div class="footer-widget footer-menu">
+                            <h2 class="footer-title">Useful Links</h2>
+                            <ul class="useFulLinks">
+                                <li >
+                                    <a asp-controller="Home" asp-action="Index">Home</a>
+                                </li>
+                                <li>
+                                    <a asp-controller="Home" asp-action="AboutUs">About Us</a>
+                                </li>
+                                <li>
+                                    <a asp-controller="Home" asp-action="Services">Services</a>
+                                </li>
+                                <li>
+                                    <a asp-controller="Home" asp-action="Articles">Articles</a>
+                                </li>
+                                <li>
+                                    <a asp-controller="Home" asp-action="ContactUs">Contact</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6">
+                    <div class="footer-widget footer-contact">
+                        <h2 class="footer-title">Contact Us</h2>
+                        <div class="footer-contact-info">
+                            @* <div class="footer-address">
+                                <p>
+                                    <i class="feather-map-pin"></i> Lonuziyaarai Magu (Near Jamaalhudheen School)
+                                </p>
+                            </div> *@
+                            <div class="footer-address">
+                                <p>
+                                    <i class="feather-phone-call"></i>@ContactInfo.PhoneNo
+                                </p>
+                            </div>
+                            <div class="footer-address mb-0">
+                                <p><i class="feather-mail"></i>@ContactInfo.Email</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-2">
+                    <div class="footer-widget">
+                        <div class="social-icon">
+                            <ul class="gap-3">
+                                <partial name="_SocialMediaLinks" />
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <div class="container">
+            <!-- Copyright -->
+            <div class="copyright">
+                <div class="row">
+                    <div class="copyright-text">
+                        <p class="mb-0 text-center">© @currentYear Passmrpch all rights reserved.</p>
+                        <p class="text-center">Software developed by : <a target="_blank" href="https://www.tharukadeshan.com">Tharuka Deshan</a></p>
+                    </div>                  
+                </div>
+            </div>
+            <!-- /Copyright -->
+        </div>
+    </div>
+</footer>
+
+<style>
+
+    .useFulLinks a:hover {
+        color: #06A5A0 !important
+    }
+
+</style>
