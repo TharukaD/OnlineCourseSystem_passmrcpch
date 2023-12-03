@@ -1,7 +1,7 @@
 ﻿@using OnlineCourseSystem.ViewModels
 @model HomePageViewModel
 @{
-    ViewData["Title"] = "MRPC";
+    ViewData["Title"] = "MRCPCH";
     var banners = @Html.Raw(Json.Serialize(Model.Banners));
 }
 
@@ -13,7 +13,7 @@
                 <div class="banner-content aos" data-aos="fade-up">
                     <h1 class="mt-md-5" id="HomeBannerTitleId">Consult Best Doctors Your Nearby Location.</h1>
                     <p id="HomeBannerDescriptionId">Feel free to contact us, get better service.</p>
-                    <a asp-controller="Home" asp-action="Register" style="background-color: #06A5A0;border-color:#06A5A0 !important;" class="btn specialHomeBtn"><span style="margin-right:5px;">Enroll now</span> <i class="fa fa-arrow-right"></i></a>
+                    <a asp-controller="Home" asp-action="Courses" style="background-color: #06A5A0;border-color:#06A5A0 !important;" class="btn specialHomeBtn"><span style="margin-right:5px;">Enroll now</span> <i class="fa fa-arrow-right"></i></a>
                 </div>
             </div>
             <div class="col-lg-6">
