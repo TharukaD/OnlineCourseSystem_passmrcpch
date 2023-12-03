@@ -2,38 +2,38 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineCourseSystem.Entities;
-using OnlineCourseSystem.Services.Serivice;
+using OnlineCourseSystem.Services.Course;
 using OnlineCourseSystem.ViewModels;
-using OnlineCourseSystem.ViewModels.Service;
+using OnlineCourseSystem.ViewModels.Course;
 
 namespace OnlineCourseSystem.Controllers
 {
     [Authorize(Roles = "Admin, Teacher")]
-    public class ServicesController : Controller
+    public class CoursesController : Controller
     {
         private IMapper _mapper;
-        private IServiceService _service;
-        private readonly ILogger<ServicesController> _logger;
+        private ICourseService _courseService;
+        private readonly ILogger<CoursesController> _logger;
 
-        public ServicesController(
-            IMapper mapper,
-            ILogger<ServicesController> logger,
-            IServiceService service
-            )
+        public CoursesController(
+           IMapper mapper,
+           ILogger<CoursesController> logger,
+           ICourseService courseService
+           )
         {
             _mapper = mapper;
             _logger = logger;
-            _service = service;
+            _courseService = courseService;
         }
 
         #region Index
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            List<ServiceViewModel>? output = new();
+            List<CourseViewModel>? output = new();
 
-            var services = await _service.GetAll();
-            output = _mapper.Map<List<ServiceViewModel>>(services);
+            var courses = await _courseService.GetAll();
+            output = _mapper.Map<List<CourseViewModel>>(courses);
 
             return View(output);
         }
@@ -44,11 +44,11 @@ namespace OnlineCourseSystem.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var service = await _service.GetById(id);
-            if (service == null)
-                return PartialView("_AjaxActionResult", new AjaxActionResult(false, "Service not found."));
+            var course = await _courseService.GetById(id);
+            if (course == null)
+                return PartialView("_AjaxActionResult", new AjaxActionResult(false, "Course not found."));
 
-            var viewModel = _mapper.Map<ServiceViewModel>(service);
+            var viewModel = _mapper.Map<CourseViewModel>(course);
 
             return View(viewModel);
         }
@@ -59,14 +59,14 @@ namespace OnlineCourseSystem.Controllers
         [HttpGet]
         public async Task<IActionResult> Add()
         {
-            var viewModel = new AddEditServiceViewModel();
+            var viewModel = new AddEditCourseViewModel();
             return PartialView("_AddEdit", viewModel);
         }
         #endregion
 
         #region Add [ HttpPost ]
         [HttpPost]
-        public async Task<IActionResult> Add(AddEditServiceViewModel viewModel)
+        public async Task<IActionResult> Add(AddEditCourseViewModel viewModel)
         {
             try
             {
@@ -75,14 +75,22 @@ namespace OnlineCourseSystem.Controllers
                     return PartialView("_AjaxActionResult", new AjaxActionResult(false, "Validations failed."));
                 }
 
-                if (await _service.IsDublicate(0, viewModel.Name.Trim()) == true)
+                if (await _courseService.IsDublicate(0, viewModel.Name.Trim()) == true)
                 {
-                    return PartialView("_AjaxActionResult", new AjaxActionResult(false, "Service name already exist"));
+                    return PartialView("_AjaxActionResult", new AjaxActionResult(false, "Course name already exist"));
                 }
 
-                var service = _mapper.Map<AddEditServiceViewModel, Service>(viewModel);
+                string currentUser = User.Identity.Name;
+                if (string.IsNullOrEmpty(currentUser))
+                {
+                    currentUser = "UnAuthorized";
+                }
 
-                await _service.Add(service);
+                var course = _mapper.Map<AddEditCourseViewModel, Course>(viewModel);
+                course.CreatedBy = currentUser;
+                course.CreatedOn = DateTime.Now;
+
+                await _courseService.Add(course);
                 return PartialView("_AjaxActionResult", new AjaxActionResult(true, "Successfully added.", "", true));
             }
             catch (Exception ex)
@@ -100,14 +108,14 @@ namespace OnlineCourseSystem.Controllers
         {
             try
             {
-                var service = await _service.GetById(id);
+                var course = await _courseService.GetById(id);
 
-                if (service == null)
+                if (course == null)
                 {
-                    return PartialView("_AjaxActionResult", new AjaxActionResult(false, "Service not found."));
+                    return PartialView("_AjaxActionResult", new AjaxActionResult(false, "Course not found."));
                 }
 
-                var viewModel = _mapper.Map<AddEditServiceViewModel>(service);
+                var viewModel = _mapper.Map<AddEditCourseViewModel>(course);
                 return PartialView("_AddEdit", viewModel);
             }
             catch (Exception ex)
@@ -120,7 +128,7 @@ namespace OnlineCourseSystem.Controllers
 
         #region Edit [ HttpPost ]
         [HttpPost]
-        public async Task<IActionResult> Edit(AddEditServiceViewModel viewModel)
+        public async Task<IActionResult> Edit(AddEditCourseViewModel viewModel)
         {
             try
             {
@@ -129,14 +137,28 @@ namespace OnlineCourseSystem.Controllers
                     return PartialView("_AjaxActionResult", new AjaxActionResult(false, "Validations failed."));
                 }
 
-                if (await _service.IsDublicate(viewModel.Id.Value, viewModel.Name.Trim()) == true)
+                if (await _courseService.IsDublicate(viewModel.Id.Value, viewModel.Name.Trim()) == true)
                 {
-                    return PartialView("_AjaxActionResult", new AjaxActionResult(false, "Service name already exist"));
+                    return PartialView("_AjaxActionResult", new AjaxActionResult(false, "Course name already exist"));
                 }
 
-                var service = _mapper.Map<AddEditServiceViewModel, Service>(viewModel);
+                var courseInDb = await _courseService.GetById(viewModel.Id.Value);
+                if (courseInDb == null)
+                {
+                    return PartialView("_AjaxActionResult", new AjaxActionResult(false, "Course not found"));
+                }
 
-                await _service.Update(service);
+                string currentUser = User.Identity.Name;
+                if (string.IsNullOrEmpty(currentUser))
+                {
+                    currentUser = "UnAuthorized";
+                }
+
+                var course = _mapper.Map(viewModel, courseInDb);
+                course.LastUpdatedOn = DateTime.Now;
+                course.LastUpdatedBy = currentUser;
+
+                await _courseService.Update(course);
                 return PartialView("_AjaxActionResult", new AjaxActionResult(true, "Successfully saved.", "", true));
             }
             catch (Exception ex)
@@ -152,23 +174,23 @@ namespace OnlineCourseSystem.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            var service = await _service.GetById(id);
-            if (service == null)
+            var course = await _courseService.GetById(id);
+            if (course == null)
             {
-                return PartialView("_AjaxActionResult", new AjaxActionResult(false, "Service not found."));
+                return PartialView("_AjaxActionResult", new AjaxActionResult(false, "Course not found."));
             }
-            var viewModel = _mapper.Map<ServiceViewModel>(service);
+            var viewModel = _mapper.Map<CourseViewModel>(course);
             return PartialView("_Delete", viewModel);
         }
         #endregion
 
         #region Delete [ HttpPost ]
         [HttpPost]
-        public async Task<IActionResult> Delete(ServiceViewModel viewModel)
+        public async Task<IActionResult> Delete(CourseViewModel viewModel)
         {
             try
             {
-                var result = await _service.Delete(viewModel.Id);
+                var result = await _courseService.Delete(viewModel.Id);
                 if (result == true)
                 {
                     return PartialView("_AjaxActionResult", new AjaxActionResult(true, "Successfully deleted.", "", true));
@@ -184,19 +206,19 @@ namespace OnlineCourseSystem.Controllers
         #endregion
 
 
-        #region Upload Service Image [ HttpGet ]
+        #region Upload Course Image [ HttpGet ]
         [HttpGet]
-        public IActionResult UploadServiceImage(int id)
+        public IActionResult UploadCourseImage(int id)
         {
-            var viewModel = new AddServiceImageViewModel();
-            viewModel.ServiceId = id;
-            return PartialView("_UploadServiceImage", viewModel);
+            var viewModel = new AddCourseImageViewModel();
+            viewModel.CourseId = id;
+            return PartialView("_UploadCourseImage", viewModel);
         }
         #endregion
 
-        #region Upload Service Image [ HttpPost ]
+        #region Upload Course Image [ HttpPost ]
         [HttpPost]
-        public async Task<IActionResult> UploadServiceImage(AddServiceImageViewModel viewModel)
+        public async Task<IActionResult> UploadCourseImage(AddCourseImageViewModel viewModel)
         {
             try
             {
@@ -205,10 +227,10 @@ namespace OnlineCourseSystem.Controllers
                     return PartialView("_AjaxActionResult", new AjaxActionResult(false, "Validations failed."));
                 }
 
-                var service = await _service.GetById(viewModel.ServiceId);
-                if (service == null)
+                var course = await _courseService.GetById(viewModel.CourseId);
+                if (course == null)
                 {
-                    return PartialView("_AjaxActionResult", new AjaxActionResult(false, "Service not found."));
+                    return PartialView("_AjaxActionResult", new AjaxActionResult(false, "Course not found."));
                 }
 
                 var file = viewModel.UploadedFile;
@@ -216,21 +238,21 @@ namespace OnlineCourseSystem.Controllers
                 var extension = file.FileName.Split('.')[file.FileName.Split('.').Length - 1];
                 string filename = DateTime.Now.Ticks.ToString() + "." + extension;
 
-                var filepath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\ServiceImages");
+                var filepath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\CourseImages");
 
                 if (!Directory.Exists(filepath))
                 {
                     Directory.CreateDirectory(filepath);
                 }
 
-                var exactpath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\ServiceImages", filename);
+                var exactpath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\CourseImages", filename);
                 using (var stream = new FileStream(exactpath, FileMode.Create))
                 {
                     await file.CopyToAsync(stream);
                 }
 
-                service.Image = filename;
-                await _service.Update(service);
+                course.Image = filename;
+                await _courseService.Update(course);
                 return PartialView("_AjaxActionResult", new AjaxActionResult(true, "Successfully uploaded.", "", true));
             }
             catch (Exception ex)

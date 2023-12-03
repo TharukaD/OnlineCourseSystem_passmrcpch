@@ -1,9 +1,11 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineCourseSystem.Entities;
 using OnlineCourseSystem.Services.Article;
 using OnlineCourseSystem.Services.ArticleCategory;
 using OnlineCourseSystem.Services.CounterRecord;
+using OnlineCourseSystem.Services.Course;
 using OnlineCourseSystem.Services.EmailService;
 using OnlineCourseSystem.Services.HomePageBanner;
 using OnlineCourseSystem.Services.Inquiry;
@@ -13,6 +15,7 @@ using OnlineCourseSystem.ViewModels;
 using OnlineCourseSystem.ViewModels.Article;
 using OnlineCourseSystem.ViewModels.ArticleCategory;
 using OnlineCourseSystem.ViewModels.CounterRecord;
+using OnlineCourseSystem.ViewModels.Course;
 using OnlineCourseSystem.ViewModels.HomePageBanner;
 using OnlineCourseSystem.ViewModels.Inquiry;
 using OnlineCourseSystem.ViewModels.Service;
@@ -20,10 +23,12 @@ using OnlineCourseSystem.ViewModels.Tag;
 
 namespace OnlineCourseSystem.Controllers
 {
+    [AllowAnonymous]
     public class HomeController : Controller
     {
         private IMapper _mapper;
         private readonly ILogger<HomeController> _logger;
+        private ICourseService _courseService;
         private IServiceService _service;
         private IHomePageBannerService _homePageBannerService;
         private ICounterRecordService _counterRecordService;
@@ -37,6 +42,7 @@ namespace OnlineCourseSystem.Controllers
         public HomeController(
             IMapper mapper,
             ILogger<HomeController> logger,
+            ICourseService courseService,
             IServiceService service,
             IHomePageBannerService homePageBannerService,
             ICounterRecordService counterRecordService,
@@ -50,6 +56,7 @@ namespace OnlineCourseSystem.Controllers
         {
             _mapper = mapper;
             _logger = logger;
+            _courseService = courseService;
             _service = service;
             _homePageBannerService = homePageBannerService;
             _counterRecordService = counterRecordService;
@@ -113,6 +120,34 @@ namespace OnlineCourseSystem.Controllers
             catch (Exception ex)
             {
                 return PartialView("_ServiceLoadingError");
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Courses()
+        {
+            var courses = await _courseService.GetAllPublished();
+            var coursesList = _mapper.Map<List<CourseViewModel>>(courses);
+            return View(coursesList);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Course(int id)
+        {
+            try
+            {
+                var course = await _courseService.GetById(id);
+                if (course == null)
+                {
+                    return View("_CourseNotFound");
+                }
+
+                var viewModel = _mapper.Map<CourseViewModel>(course);
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                return PartialView("_CourseLoadingError");
             }
         }
 

@@ -1,0 +1,150 @@
+﻿@using OnlineCourseSystem.ViewModels.Course
+@model IEnumerable<CourseViewModel>;
+@{
+    Layout = "_AdminLayout";
+    ViewBag.Title = "Courses";
+}
+
+@section header{
+    <h3 class="content-header-title">Courses</h3>
+    <div class="row breadcrumbs-top">
+        <div class="breadcrumb-wrapper col-12">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a asp-controller="Courses" asp-action="Index">Courses</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a>List</a>
+                </li>
+            </ol>
+        </div>
+    </div>
+}
+
+@section headerMenu
+{
+    <a class="btn box-shadow-2 px-2 mb-1 AddEditBtn"
+       data-ajax="true"
+       data-ajax-update="#DivModalTarget"
+       data-ajax-begin="blockUI"
+       data-ajax-complete="unblockUI"
+       data-toggle="tooltip"
+       asp-action="Add"
+       asp-controller="Courses">
+       <i class="fa fa-plus-circle" style="margin-right:5px;font-size:17px;"></i>
+        New
+    </a>
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row ">
+                    <div class="col-md-12 ">
+                        <div class="table-responsive">
+                            <table class="table align-items-center table-sm " id="CoursesTabId">
+                                <thead>
+                                    <tr>
+                                        <th>Image</th>
+                                        <th>Name</th>
+                                        <th>Short Description</th>
+                                        <th>Long Description</th>
+                                        <th>Price</th>
+                                        <th>Old Price</th>
+                                        <th>Priority</th>
+                                        <th>Published</th>
+                                        <th class="text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var course in @Model)
+                                    {
+                                        string bgColor = "white";
+                                        if (course.IsPublished)
+                                        {
+                                            bgColor = "#F0FCF5";
+                                        }
+                                        <tr style="background-color:@bgColor">
+                                            <td>
+                                                <img height="120" width="120" src="@course.ImageUrl" />
+                                                <div class="text-center" style="margin-top:5px;">
+                                                    <a data-ajax="true"
+                                                        data-ajax-update="#DivModalTarget"
+                                                        data-ajax-begin="blockUI"
+                                                        data-ajax-complete="unblockUI"
+                                                        data-toggle="tooltip"
+                                                        asp-action="UploadCourseImage"
+                                                        asp-controller="Courses"
+                                                        asp-route-id="@course.Id">
+                                                        <i class="fa fa-upload"> Upload</i></a>
+                                                </div>
+                                                
+                                            </td>
+                                            <td>@course.Name</td>
+                                            <td>@course.ShortDescription</td>
+                                            <td>
+                                                <span class="d-inline-block text-truncate" style="max-width:350px;">
+                                                    @course.LongDescription
+                                                </span>
+                                            </td>
+                                            <td> @course.Price</td>
+                                            <td> @course.OldPrice</td>
+                                            <td> @course.Priority</td>
+                                            <td> @course.IsPublished</td>
+                                            <td class="text-center">
+                                                <div>
+                                                    <a data-ajax="true"
+                                                       data-ajax-update="#DivModalTarget"
+                                                       data-ajax-begin="blockUI"
+                                                       data-ajax-complete="unblockUI"
+                                                       data-toggle="tooltip"
+                                                       asp-action="Edit"
+                                                       asp-controller="Courses"
+                                                       asp-route-id="@course.Id">Edit</a>
+                                                    <span> | </span>
+                                                    <a data-ajax="true"
+                                                        data-ajax-update="#DivModalTarget"
+                                                        data-ajax-begin="blockUI"
+                                                        data-ajax-complete="unblockUI"
+                                                        data-toggle="tooltip"
+                                                        asp-action="Delete"
+                                                        asp-controller="Courses"
+                                                        asp-route-id="@course.Id">
+                                                        <span class="text-danger">Delete</span>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(function () {
+
+            $(".navItems").removeClass("active");
+            $("#CoursesNavId").addClass("active");
+
+            $("#CoursesTable").dataTable(
+                {
+                    bLengthChange: true,
+                    bPaginate: true,
+                    ordering: true,
+                    language: {
+                        search: "",
+                        searchPlaceholder: "Search this list...",
+                    }
+                });
+
+        });
+    </script>
+}

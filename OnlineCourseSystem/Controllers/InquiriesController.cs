@@ -6,7 +6,7 @@ using OnlineCourseSystem.ViewModels.Inquiry;
 
 namespace OnlineCourseSystem.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin, Teacher")]
     public class InquiriesController : Controller
     {
         private IMapper _mapper;

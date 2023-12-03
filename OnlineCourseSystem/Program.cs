@@ -7,6 +7,7 @@ using OnlineCourseSystem.Middleware;
 using OnlineCourseSystem.Services.Article;
 using OnlineCourseSystem.Services.ArticleCategory;
 using OnlineCourseSystem.Services.CounterRecord;
+using OnlineCourseSystem.Services.Course;
 using OnlineCourseSystem.Services.EmailService;
 using OnlineCourseSystem.Services.HomePageBanner;
 using OnlineCourseSystem.Services.Inquiry;
@@ -43,6 +44,7 @@ builder.Services.AddScoped<IServiceService, ServiceService>();
 builder.Services.AddScoped<IHomePageBannerService, HomePageBannerService>();
 builder.Services.AddScoped<ICounterRecordService, CounterRecordService>();
 builder.Services.AddScoped<IInquiryService, InquiryService>();
+builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 
 //---- Mapper Configuration

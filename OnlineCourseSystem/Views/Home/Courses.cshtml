@@ -1,5 +1,7 @@
-﻿@{
-    ViewData["Title"] = "Services";
+﻿@using OnlineCourseSystem.ViewModels.Course
+@model IEnumerable<CourseViewModel>;
+@{
+    ViewData["Title"] = "Courses";
 }
 
 <!-- Breadcrumb -->
@@ -7,11 +9,11 @@
     <div class="container">
         <div class="row align-items-center inner-banner">
             <div class="col-md-12 col-12 text-center">
-                <h2 class="breadcrumb-title">Services</h2>
+                <h2 class="breadcrumb-title">Courses</h2>
                 <nav aria-label="breadcrumb" class="page-breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/Home/Index">Home</a></li>
-                        <li class="breadcrumb-item"><a href="/Home/Services">Services</a></li>
+                        <li class="breadcrumb-item"><a href="/Home/Courses">Courses</a></li>
                     </ol>
                 </nav>
             </div>
@@ -26,21 +28,46 @@
         <div class="row">
             <div class="col-lg-12 aos" data-aos="fade-up">
                 <div class="section-header-fourteen">
-                    <h2 style="color: #06A5A0 !important;">Our Services</h2>
+                    <h2 style="color: #06A5A0 !important;">Our Courses</h2>
                     <p>
-                        Our services are vast and include the actions that helps to achive desired scores.
+                       We are providing comprehensive courses set.
                     </p>
                 </div>
             </div>
         </div>
 
-        <partial model="@Model" name="/Views/Home/_ServicesList.cshtml" />
+        <div class="row">
+            <div class="d-flex justify-content-center">
+                @if (Model.Any())
+                {
+                    @foreach (var course in Model)
+                    {
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <a asp-route-id="@course.Id" asp-action="Course" asp-controller="Home">
+                                <div class="our-services-list serviceCard">
+                                    <div class="service-icons">
+                                        <img src="@course.ImageUrl" style="height:220px;width:220px;" alt="service image">
+                                    </div>
+                                    <h4>@course.Name</h4>
+                                    <p>@Html.Raw(@course.ShortDescription)</p>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="col-lg-3 col-md-4 col-sm-12 d-flex">
+                        <h3>No courses found.</h3>
+                    </div>
+                }
+            </div>
+        </div>
+            
 
     </div>
 </section>
 <!-- /services Section -->
-
-<div id="SeviceDetailsDiv"></div>
 
 <hr />
 
@@ -71,13 +98,13 @@
         color: #4D555F !important;
     }
 
-    #ServicesNavId a {
+    #CoursesNavId a {
         color: #06A5A0 !important;
         text-decoration: underline;
         text-underline-offset: 8px;
     }
 
-    #CoursesNavId a {
+    #ServicesNavId a {
         color: #4D555F !important;
     }
 

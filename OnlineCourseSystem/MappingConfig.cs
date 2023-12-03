@@ -4,6 +4,7 @@ using OnlineCourseSystem.Utility;
 using OnlineCourseSystem.ViewModels.Article;
 using OnlineCourseSystem.ViewModels.ArticleCategory;
 using OnlineCourseSystem.ViewModels.CounterRecord;
+using OnlineCourseSystem.ViewModels.Course;
 using OnlineCourseSystem.ViewModels.HomePageBanner;
 using OnlineCourseSystem.ViewModels.Inquiry;
 using OnlineCourseSystem.ViewModels.Service;
@@ -20,6 +21,12 @@ public class MappingConfig
             config.CreateMap<Service, ServiceViewModel>()
                 .ForMember(r => r.ImageUrl, opt => opt.MapFrom(src => HelperMethods.ReturnServiceImagePath(src.Image)));
             config.CreateMap<Service, AddEditServiceViewModel>().ReverseMap();
+            #endregion
+
+            #region Course
+            config.CreateMap<Course, CourseViewModel>()
+                .ForMember(r => r.ImageUrl, opt => opt.MapFrom(src => HelperMethods.ReturnCourseImagePath(src.Image)));
+            config.CreateMap<Course, AddEditCourseViewModel>().ReverseMap();
             #endregion
 
             #region HomePageBanner

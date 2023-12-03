@@ -13,6 +13,17 @@
             return ImagePath;
         }
 
+        public static string ReturnCourseImagePath(string courseImage)
+        {
+            string ImagePath = "/img/CourseImages/default.jpg";
+            if (!string.IsNullOrEmpty(courseImage))
+            {
+                ImagePath = $"/img/CourseImages/{courseImage}";
+            }
+
+            return ImagePath;
+        }
+
         public static string ReturnHomePageBannerSmallImagePath(string image)
         {
             string ImagePath = "/img/HomePageBannerSmallImage/default.jpg";

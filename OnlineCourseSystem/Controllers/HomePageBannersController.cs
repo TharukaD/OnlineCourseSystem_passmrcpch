@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineCourseSystem.Entities;
 using OnlineCourseSystem.Services.HomePageBanner;
@@ -7,6 +8,7 @@ using OnlineCourseSystem.ViewModels.HomePageBanner;
 
 namespace OnlineCourseSystem.Controllers
 {
+    [Authorize(Roles = "Admin, Teacher")]
     public class HomePageBannersController : Controller
     {
         private IMapper _mapper;

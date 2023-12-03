@@ -20,6 +20,7 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<CounterRecord> CounterRecords { get; set; }
     public DbSet<HomePageBanner> HomePageBanners { get; set; }
     public DbSet<Inquiry> Inquiries { get; set; }
+    public DbSet<Course> Courses { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -29,7 +30,7 @@ public class ApplicationDbContext : IdentityDbContext
         modelBuilder.ApplyConfiguration(new ArticleConfiguration());
         modelBuilder.ApplyConfiguration(new ArticleTagConfiguration());
         modelBuilder.ApplyConfiguration(new ArticleCategoryConfiguration());
-
+        modelBuilder.ApplyConfiguration(new CourseConfiguration());
         modelBuilder.ApplyConfiguration(new ServiceConfiguration());
         modelBuilder.ApplyConfiguration(new CounterRecordConfiguration());
         modelBuilder.ApplyConfiguration(new HomePageBannerConfiguration());

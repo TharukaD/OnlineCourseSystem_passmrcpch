@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineCourseSystem.Entities;
 using OnlineCourseSystem.Services.CounterRecord;
@@ -7,6 +8,7 @@ using OnlineCourseSystem.ViewModels.CounterRecord;
 
 namespace OnlineCourseSystem.Controllers
 {
+    [Authorize(Roles = "Admin, Teacher")]
     public class CounterRecordsController : Controller
     {
         private IMapper _mapper;
