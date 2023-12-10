@@ -10,6 +10,7 @@ using OnlineCourseSystem.Services.EmailService;
 using OnlineCourseSystem.Services.HomePageBanner;
 using OnlineCourseSystem.Services.Inquiry;
 using OnlineCourseSystem.Services.Serivice;
+using OnlineCourseSystem.Services.StudyMaterial;
 using OnlineCourseSystem.Services.Tag;
 using OnlineCourseSystem.ViewModels;
 using OnlineCourseSystem.ViewModels.Article;
@@ -19,6 +20,7 @@ using OnlineCourseSystem.ViewModels.Course;
 using OnlineCourseSystem.ViewModels.HomePageBanner;
 using OnlineCourseSystem.ViewModels.Inquiry;
 using OnlineCourseSystem.ViewModels.Service;
+using OnlineCourseSystem.ViewModels.StudyMaterial;
 using OnlineCourseSystem.ViewModels.Tag;
 
 namespace OnlineCourseSystem.Controllers
@@ -36,6 +38,7 @@ namespace OnlineCourseSystem.Controllers
 		private ITagService _tagService;
 		private IArticleCategoryService _articleCategoryService;
 		private IInquiryService _inquiryService;
+		private IStudyMaterialService _studyMaterialService;
 		private IEmailService _emailService;
 		private readonly IConfiguration _configuration;
 
@@ -50,6 +53,7 @@ namespace OnlineCourseSystem.Controllers
 			ITagService tagService,
 			IArticleCategoryService articleCategoryService,
 			IInquiryService inquiryService,
+			IStudyMaterialService studyMaterialService,
 			IEmailService emailService,
 			IConfiguration configuration
 		)
@@ -64,6 +68,7 @@ namespace OnlineCourseSystem.Controllers
 			_tagService = tagService;
 			_articleCategoryService = articleCategoryService;
 			_inquiryService = inquiryService;
+			_studyMaterialService = studyMaterialService;
 			_emailService = emailService;
 			_configuration = configuration;
 		}
@@ -193,40 +198,23 @@ namespace OnlineCourseSystem.Controllers
 		[HttpGet]
 		public async Task<IActionResult> StudyMaterials()
 		{
-			var articles = await _articleService.GetAll();
-			var articleList = _mapper.Map<List<ArticleViewModel>>(articles);
-			var latestArticleList = articleList.OrderByDescending(r => r.IsPublished).Take(4).ToList();
+			var materials = await _studyMaterialService.GetAllPublished();
+			var materialsList = _mapper.Map<List<StudyMaterialViewModel>>(materials);
 
-			var tags = _mapper.Map<List<TagViewModel>>(await _tagService.GetAll());
-			var categories = _mapper.Map<List<ArticleCategoryViewModel>>(await _articleCategoryService.GetAll());
-
-			var viewModel = new ArticlesPageViewModel();
-			viewModel.AllArticles = articleList;
-			viewModel.LatestArticles = latestArticleList;
-			viewModel.Tags = tags;
-			viewModel.Categories = categories;
-
-			return View(viewModel);
+			return View(materialsList);
 		}
 
 
 		[HttpGet]
 		public async Task<IActionResult> StudyMaterial(int id)
 		{
-			var articles = await _articleService.GetAll();
-			var articleList = _mapper.Map<List<ArticleViewModel>>(articles);
-			var latestArticleList = articleList.OrderByDescending(r => r.IsPublished).Take(4).ToList();
+			var material = await _studyMaterialService.GetById(id);
+			if (material == null)
+			{
+				return RedirectToAction("StudyMaterials");
+			}
 
-			var tags = _mapper.Map<List<TagViewModel>>(await _tagService.GetAll());
-			var categories = _mapper.Map<List<ArticleCategoryViewModel>>(await _articleCategoryService.GetAll());
-
-			var viewModel = new ArticlesPageViewModel();
-			viewModel.AllArticles = articleList;
-			viewModel.LatestArticles = latestArticleList;
-			viewModel.Tags = tags;
-			viewModel.Categories = categories;
-			viewModel.Article = articleList.FirstOrDefault(r => r.Id == id);
-
+			var viewModel = _mapper.Map<StudyMaterialViewModel>(material);
 			return View(viewModel);
 		}
 

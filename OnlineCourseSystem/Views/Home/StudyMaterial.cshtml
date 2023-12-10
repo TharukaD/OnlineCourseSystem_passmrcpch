@@ -1,5 +1,6 @@
 ﻿@using OnlineCourseSystem.ViewModels;
-@model ArticlesPageViewModel
+@using OnlineCourseSystem.ViewModels.StudyMaterial
+@model StudyMaterialViewModel
 @{
     ViewData["Title"] = "Article";
 }
@@ -31,28 +32,12 @@
 			<div class="col-md-12">
 				<div class="blog-view">
 					<div class="blog blog-single-post">
-						<div class="blog-image">
-							<a>
-								<iframe height="600px" width="100%" src="https://www.youtube.com/embed/tgbNymZ7vqY">
-								</iframe>
-							</a>
-							@* <a href="javascript:void(0);"><img alt="blog-image" src="@Model.Article.ImageUrl" class="img-fluid"></a> *@
-						</div>
-						<h3 class="blog-title">@Model.Article.Title</h3>
-						<div class="blog-info clearfix">
-							<div class="post-left">
-								<ul>
-									<li>
-										<div class="post-author">
-											<a href="#"><span>@Model.Article.AuthorName</span></a>
-										</div>
-									</li>
-									<li><i class="far fa-calendar"></i>@Model.Article.PublishedDateString</li>
-								</ul>
-							</div>
-						</div>
+						<h3 class="blog-title">@Model.Title</h3>
+						<object data="@Model.FileUrl" width="100%" height="600">
+							@Model.FileUrl
+						</object>
 						<div class="blog-content">
-							@Html.Raw(Model.Article.LongDescription)
+							@Html.Raw(Model.LongDescription)
 						</div>
 					</div>
 				</div>

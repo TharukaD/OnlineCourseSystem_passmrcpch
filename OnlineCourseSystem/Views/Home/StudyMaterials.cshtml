@@ -1,5 +1,5 @@
-﻿@using OnlineCourseSystem.ViewModels;
-@model ArticlesPageViewModel
+﻿@using OnlineCourseSystem.ViewModels.StudyMaterial;
+@model IEnumerable<StudyMaterialViewModel>
 @{
 	ViewData["Title"] = "Study Materials";
 }
@@ -29,45 +29,28 @@
 			<div class="col-md-12">
 
 				<div class="row blog-grid-row">
-					@foreach (var article in Model.AllArticles)
+					@foreach (var material in Model)
 					{
 						<div class="col-lg-4 col-md-6 col-sm-12">
 							<div class="blog grid-blog">
-								<div class="blog-image">									
-									<a asp-route-id="@article.Id" asp-action="StudyMaterial" asp-controller="Home">
-										<img class="img-fluid" src="@article.ImageUrl" alt="Article Image" style="max-height:350px">
+								<div class="blog-image">
+									<a asp-route-id="@material.Id" asp-action="StudyMaterial" asp-controller="Home">
+										<img class="img-fluid" src="@material.ImageUrl" alt="Material Image" style="max-height:280px">
 									</a>
-									@* <a>
-										<iframe width="420" height="345" src="https://www.youtube.com/embed/tgbNymZ7vqY">
-										</iframe>
-									</a> *@
 								</div>
 								<div class="blog-content">
-									<h3 class="blog-title"><a asp-route-id="@article.Id" asp-action="StudyMaterial" asp-controller="Home">@article.Title</a></h3>
-									<p class="mb-0">@Html.Raw(@article.ShortDescription)</p>
+									<h5 style="color:blue">@material.StudyMaterialTypeName</h5>
+									<h3 class="blog-title"><a asp-route-id="@material.Id" asp-action="StudyMaterial" asp-controller="Home">@material.Title</a></h3>
+									<p class="mb-0">@Html.Raw(@material.ShortDescription)</p>
+								</div>
+								<div class=" text-center">
+									<a asp-route-id="@material.Id" asp-action="StudyMaterial" asp-controller="Home" class="btn btn-sm btn-primary" style="background-color: #06A5A0;border-color:#06A5A0 !important;color:white;">
+										See now
+									</a>
 								</div>
 							</div>
 						</div>
 					}
-
-					<div class="col-lg-4 col-md-6 col-sm-12">
-						<div class="blog grid-blog">
-							<div class="blog-image">
-								<a>
-									<iframe width="420" height="345" src="https://www.youtube.com/embed/tgbNymZ7vqY">
-									</iframe>
-								</a>
-							</div>
-							<div class="blog-content">
-								<h3 class="blog-title">
-									<a>This is a test article</a>
-									<span style="font-size:11px;color:blue">[Video]</span>									
-								</h3>
-								@* <p class="mb-0">@Html.Raw(@article.ShortDescription)</p> *@
-							</div>
-						</div>
-					</div>
-
 				</div>
 		
 			</div>
