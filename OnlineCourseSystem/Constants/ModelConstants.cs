@@ -31,5 +31,14 @@
             public static string Email = "passmrcpch@passmrcpch.com";
         }
         #endregion
+
+        #region FileTypes Related
+        public static class FileTypes
+        {
+            public static string Image = "Image";
+            public static string Pdf = "Pdf";
+            public static string Video = "Video";
+        }
+        #endregion
     }
 }

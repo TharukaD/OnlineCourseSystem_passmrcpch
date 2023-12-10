@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineCourseSystem.Data;
 
@@ -11,9 +12,11 @@ using OnlineCourseSystem.Data;
 namespace OnlineCourseSystem.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231210131317_AddedStudyMaterialType")]
+    partial class AddedStudyMaterialType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -511,48 +514,6 @@ namespace OnlineCourseSystem.Data.Migrations
                     b.ToTable("Services");
                 });
 
-            modelBuilder.Entity("OnlineCourseSystem.Entities.StudyMaterial", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("FileName")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("Image")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsPublished")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LongDescription")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Priority")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ShortDescription")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("StudyMaterialTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StudyMaterialTypeId");
-
-                    b.ToTable("StudyMaterials");
-                });
-
             modelBuilder.Entity("OnlineCourseSystem.Entities.StudyMaterialType", b =>
                 {
                     b.Property<int>("Id")
@@ -579,7 +540,12 @@ namespace OnlineCourseSystem.Data.Migrations
                         new
                         {
                             Id = 2,
-                            Name = "Pdf"
+                            Name = "PDF"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "PPT"
                         });
                 });
 
@@ -684,17 +650,6 @@ namespace OnlineCourseSystem.Data.Migrations
                     b.Navigation("Article");
 
                     b.Navigation("Tag");
-                });
-
-            modelBuilder.Entity("OnlineCourseSystem.Entities.StudyMaterial", b =>
-                {
-                    b.HasOne("OnlineCourseSystem.Entities.StudyMaterialType", "StudyMaterialType")
-                        .WithMany()
-                        .HasForeignKey("StudyMaterialTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("StudyMaterialType");
                 });
 
             modelBuilder.Entity("OnlineCourseSystem.Entities.Article", b =>

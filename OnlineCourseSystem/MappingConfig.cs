@@ -8,6 +8,8 @@ using OnlineCourseSystem.ViewModels.Course;
 using OnlineCourseSystem.ViewModels.HomePageBanner;
 using OnlineCourseSystem.ViewModels.Inquiry;
 using OnlineCourseSystem.ViewModels.Service;
+using OnlineCourseSystem.ViewModels.StudyMaterial;
+using OnlineCourseSystem.ViewModels.StudyMaterialType;
 using OnlineCourseSystem.ViewModels.Tag;
 namespace OnlineCourseSystem;
 
@@ -27,6 +29,15 @@ public class MappingConfig
             config.CreateMap<Course, CourseViewModel>()
                 .ForMember(r => r.ImageUrl, opt => opt.MapFrom(src => HelperMethods.ReturnCourseImagePath(src.Image)));
             config.CreateMap<Course, AddEditCourseViewModel>().ReverseMap();
+            #endregion
+
+            #region Study Material
+            config.CreateMap<StudyMaterial, StudyMaterialViewModel>()
+                .ForMember(r => r.StudyMaterialTypeName, opt => opt.MapFrom(src => src.StudyMaterialType.Name))
+                .ForMember(r => r.ImageUrl, opt => opt.MapFrom(src => HelperMethods.ReturnStudyMaterialImagePath(src.Image)))
+                .ForMember(r => r.FileUrl, opt => opt.MapFrom(src => HelperMethods.ReturnStudyMaterialFilePath(src.StudyMaterialType.Name, src.FileName)));
+            config.CreateMap<StudyMaterial, AddEditStudyMaterialViewModel>().ReverseMap();
+            config.CreateMap<StudyMaterialType, StudyMaterialTypeViewModel>();
             #endregion
 
             #region HomePageBanner

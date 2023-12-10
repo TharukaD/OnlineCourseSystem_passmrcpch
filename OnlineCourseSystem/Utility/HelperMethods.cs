@@ -1,4 +1,6 @@
-﻿namespace OnlineCourseSystem.Utility
+﻿using static OnlineCourseSystem.Constants.ModelConstants;
+
+namespace OnlineCourseSystem.Utility
 {
     public static class HelperMethods
     {
@@ -21,6 +23,31 @@
                 ImagePath = $"/img/CourseImages/{courseImage}";
             }
 
+            return ImagePath;
+        }
+
+        public static string ReturnStudyMaterialImagePath(string studyMaterialImage)
+        {
+            string ImagePath = "/img/StudyMaterialImages/default.jpg";
+            if (!string.IsNullOrEmpty(studyMaterialImage))
+            {
+                ImagePath = $"/img/StudyMaterialImages/{studyMaterialImage}";
+            }
+
+            return ImagePath;
+        }
+
+        public static string ReturnStudyMaterialFilePath(string type, string studyMaterialFileName)
+        {
+            string ImagePath = "";
+            if (type == FileTypes.Pdf)
+            {
+                ImagePath = $"/pdfs/{studyMaterialFileName}";
+            }
+            else if (type == FileTypes.Video)
+            {
+                ImagePath = $"/videos/{studyMaterialFileName}";
+            }
             return ImagePath;
         }
 
