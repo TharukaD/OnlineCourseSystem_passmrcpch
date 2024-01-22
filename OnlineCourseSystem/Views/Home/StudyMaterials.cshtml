@@ -1,5 +1,5 @@
-﻿@using OnlineCourseSystem.ViewModels.StudyMaterial;
-@model IEnumerable<StudyMaterialViewModel>
+﻿@using OnlineCourseSystem.ViewModels.StudyMaterialCategory
+@model IEnumerable<StudyMaterialCategoryViewModel>
 @{
 	ViewData["Title"] = "Study Materials";
 }
@@ -29,26 +29,16 @@
 			<div class="col-md-12">
 
 				<div class="row blog-grid-row">
-					@foreach (var material in Model)
+					@foreach (var category in Model)
 					{
 						<div class="col-lg-4 col-md-6 col-sm-12">
-							<div class="blog grid-blog">
-								<div class="blog-image">
-									<a asp-route-id="@material.Id" asp-action="StudyMaterial" asp-controller="Home">
-										<img class="img-fluid" src="@material.ImageUrl" alt="Material Image" style="max-height:280px">
-									</a>
+							<a class="blogLink" asp-action="StudyMaterialsInCategory" asp-controller="Home" asp-route-categoryId="@category.Id">
+								<div class="blog grid-blog" style="background-color:#F1F1F1">
+									<div class="blog-content">
+										<h4><i class="fa fa-folder" style="color:#FAE0AC;"></i> @category.Name</h4>
+									</div>
 								</div>
-								<div class="blog-content">
-									<h5 style="color:blue">@material.StudyMaterialTypeName</h5>
-									<h3 class="blog-title"><a asp-route-id="@material.Id" asp-action="StudyMaterial" asp-controller="Home">@material.Title</a></h3>
-									<p class="mb-0">@Html.Raw(@material.ShortDescription)</p>
-								</div>
-								<div class=" text-center">
-									<a asp-route-id="@material.Id" asp-action="StudyMaterial" asp-controller="Home" class="btn btn-sm btn-primary" style="background-color: #06A5A0;border-color:#06A5A0 !important;color:white;">
-										See now
-									</a>
-								</div>
-							</div>
+							</a>							
 						</div>
 					}
 				</div>
@@ -90,6 +80,14 @@
 
 	#ContactNavId a {
 		color: #4D555F !important;
+	}
+
+	.blogLink {
+		background-color: #0001;
+	}
+
+	.blogLink:hover {
+		background-color: yellow;
 	}
 
 </style>

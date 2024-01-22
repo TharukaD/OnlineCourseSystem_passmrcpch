@@ -11,6 +11,7 @@ using OnlineCourseSystem.Services.HomePageBanner;
 using OnlineCourseSystem.Services.Inquiry;
 using OnlineCourseSystem.Services.Serivice;
 using OnlineCourseSystem.Services.StudyMaterial;
+using OnlineCourseSystem.Services.StudyMaterialCategory;
 using OnlineCourseSystem.Services.Tag;
 using OnlineCourseSystem.ViewModels;
 using OnlineCourseSystem.ViewModels.Article;
@@ -21,6 +22,7 @@ using OnlineCourseSystem.ViewModels.HomePageBanner;
 using OnlineCourseSystem.ViewModels.Inquiry;
 using OnlineCourseSystem.ViewModels.Service;
 using OnlineCourseSystem.ViewModels.StudyMaterial;
+using OnlineCourseSystem.ViewModels.StudyMaterialCategory;
 using OnlineCourseSystem.ViewModels.Tag;
 
 namespace OnlineCourseSystem.Controllers
@@ -39,6 +41,7 @@ namespace OnlineCourseSystem.Controllers
 		private IArticleCategoryService _articleCategoryService;
 		private IInquiryService _inquiryService;
 		private IStudyMaterialService _studyMaterialService;
+		private IStudyMaterialCategoryService _studyMaterialCategoryService;
 		private IEmailService _emailService;
 		private readonly IConfiguration _configuration;
 
@@ -54,6 +57,7 @@ namespace OnlineCourseSystem.Controllers
 			IArticleCategoryService articleCategoryService,
 			IInquiryService inquiryService,
 			IStudyMaterialService studyMaterialService,
+			IStudyMaterialCategoryService studyMaterialCategoryService,
 			IEmailService emailService,
 			IConfiguration configuration
 		)
@@ -69,6 +73,7 @@ namespace OnlineCourseSystem.Controllers
 			_articleCategoryService = articleCategoryService;
 			_inquiryService = inquiryService;
 			_studyMaterialService = studyMaterialService;
+			_studyMaterialCategoryService = studyMaterialCategoryService;
 			_emailService = emailService;
 			_configuration = configuration;
 		}
@@ -198,7 +203,23 @@ namespace OnlineCourseSystem.Controllers
 		[HttpGet]
 		public async Task<IActionResult> StudyMaterials()
 		{
-			var materials = await _studyMaterialService.GetAllPublished();
+			var categories = await _studyMaterialCategoryService.GetAll();
+			var categoriesList = _mapper.Map<List<StudyMaterialCategoryViewModel>>(categories);
+
+			return View(categoriesList);
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> StudyMaterialsInCategory(int categoryId)
+		{
+			var category = await _studyMaterialCategoryService.GetById(categoryId);
+			if (category == null)
+			{
+				return RedirectToAction("StudyMaterials");
+			}
+
+			ViewBag.CategoryName = category.Name;
+			var materials = await _studyMaterialService.GetAllPublished(categoryId);
 			var materialsList = _mapper.Map<List<StudyMaterialViewModel>>(materials);
 
 			return View(materialsList);
