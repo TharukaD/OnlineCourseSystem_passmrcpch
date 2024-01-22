@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using OnlineCourseSystem.ViewModels.StudyMaterialCategory;
 using OnlineCourseSystem.ViewModels.StudyMaterialType;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -35,9 +36,14 @@ namespace OnlineCourseSystem.ViewModels.StudyMaterial
         public int StudyMaterialTypeId { get; set; }
         public SelectList StudyMaterialTypeSelectList { get; set; }
 
-        public void Initialize(List<StudyMaterialTypeViewModel> materialTypeList)
+        [Display(Name = "Material Category")]
+        public int? StudyMaterialCategoryId { get; set; }
+        public SelectList StudyMaterialCategoryeSelectList { get; set; }
+
+        public void Initialize(List<StudyMaterialTypeViewModel> materialTypeList, List<StudyMaterialCategoryViewModel> categoryList)
         {
             StudyMaterialTypeSelectList = new SelectList(materialTypeList, "Id", "Name");
+            StudyMaterialCategoryeSelectList = new SelectList(categoryList, "Id", "Name");
         }
     }
 }

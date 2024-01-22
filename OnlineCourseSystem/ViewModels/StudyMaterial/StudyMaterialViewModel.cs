@@ -14,5 +14,7 @@
         public string ImageUrl { get; set; }
         public int StudyMaterialTypeId { get; set; }
         public string StudyMaterialTypeName { get; set; }
+        public int? StudyMaterialCategoryId { get; set; }
+        public string StudyMaterialCategoryName { get; set; }
     }
 }

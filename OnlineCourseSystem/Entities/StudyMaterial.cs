@@ -15,6 +15,8 @@ namespace OnlineCourseSystem.Entities
         public StudyMaterialType StudyMaterialType { get; set; }
         public bool IsPublished { get; set; }
         public int Priority { get; set; }
+        public int? StudyMaterialCategoryId { get; set; }
+        public StudyMaterialCategory? StudyMaterialCategory { get; set; }
     }
 
     public class StudyMaterialConfiguration : IEntityTypeConfiguration<StudyMaterial>

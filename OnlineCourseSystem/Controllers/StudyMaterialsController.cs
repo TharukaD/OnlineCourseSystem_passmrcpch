@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineCourseSystem.Entities;
 using OnlineCourseSystem.Services.StudyMaterial;
+using OnlineCourseSystem.Services.StudyMaterialCategory;
 using OnlineCourseSystem.ViewModels;
 using OnlineCourseSystem.ViewModels.StudyMaterial;
+using OnlineCourseSystem.ViewModels.StudyMaterialCategory;
 using OnlineCourseSystem.ViewModels.StudyMaterialType;
 using static OnlineCourseSystem.Constants.ModelConstants;
 
@@ -15,17 +17,20 @@ namespace OnlineCourseSystem.Controllers
     {
         private IMapper _mapper;
         private IStudyMaterialService _studyMaterialService;
+        private IStudyMaterialCategoryService _studyMaterialCategoryService;
         private readonly ILogger<StudyMaterialsController> _logger;
 
         public StudyMaterialsController(
            IMapper mapper,
            ILogger<StudyMaterialsController> logger,
-           IStudyMaterialService studyMaterialService
-           )
+           IStudyMaterialService studyMaterialService,
+           IStudyMaterialCategoryService studyMaterialCategoryService
+        )
         {
             _mapper = mapper;
             _logger = logger;
             _studyMaterialService = studyMaterialService;
+            _studyMaterialCategoryService = studyMaterialCategoryService;
         }
 
         #region Index
@@ -88,7 +93,8 @@ namespace OnlineCourseSystem.Controllers
         {
             var viewModel = new AddEditStudyMaterialViewModel();
             var materialTypesList = _mapper.Map<List<StudyMaterialTypeViewModel>>(await _studyMaterialService.GetAllTypes());
-            viewModel.Initialize(materialTypesList);
+            var categoryList = _mapper.Map<List<StudyMaterialCategoryViewModel>>(await _studyMaterialCategoryService.GetAll());
+            viewModel.Initialize(materialTypesList, categoryList);
 
             return PartialView("_AddEdit", viewModel);
         }
@@ -148,7 +154,8 @@ namespace OnlineCourseSystem.Controllers
                 var viewModel = _mapper.Map<AddEditStudyMaterialViewModel>(material);
 
                 var materialTypesList = _mapper.Map<List<StudyMaterialTypeViewModel>>(await _studyMaterialService.GetAllTypes());
-                viewModel.Initialize(materialTypesList);
+                var categoryList = _mapper.Map<List<StudyMaterialCategoryViewModel>>(await _studyMaterialCategoryService.GetAll());
+                viewModel.Initialize(materialTypesList, categoryList);
 
                 return PartialView("_AddEdit", viewModel);
             }

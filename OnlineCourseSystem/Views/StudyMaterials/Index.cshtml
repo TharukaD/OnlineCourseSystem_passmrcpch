@@ -51,6 +51,7 @@
                                         <th>Title</th>
                                         <th>Type</th>
                                         <th>File</th>
+                                        <th>Category</th>
                                         <th>Priority</th>
                                         <th>Published</th>
                                         <th class="text-center">Actions</th>
@@ -153,6 +154,16 @@
                                                     }
                                                 }
                                             </td>
+                                            <td> 
+                                                @if(material.StudyMaterialCategoryId == null)
+                                                {
+                                                    <span>-</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>@material.StudyMaterialCategoryName</span>
+                                                }
+                                            </td>
                                             <td> @material.Priority</td>
                                             <td> @material.IsPublished</td>
                                             <td class="text-center">
@@ -195,7 +206,7 @@
         $(function () {
 
             $(".navItems").removeClass("active");
-            $("#StudyMaterialsNavId").addClass("active");
+            $("#AllMaterialsNavId").addClass("active");
 
             $("#StudyMaterialsTable").dataTable(
                 {

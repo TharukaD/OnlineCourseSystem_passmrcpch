@@ -24,6 +24,7 @@ public class StudyMaterialService : IStudyMaterialService
     {
         return await _context.StudyMaterials
             .Include(r => r.StudyMaterialType)
+            .Include(r => r.StudyMaterialCategory).DefaultIfEmpty()
             .OrderBy(r => r.Priority).ToListAsync();
     }
 

@@ -28,7 +28,7 @@
         public static class ContactInfo
         {
             public static string PhoneNo = "+4478580 98656";
-            public static string Email = "passmrcpch@passmrcpch.com";
+            public static string Email = "kthalagahage@gmail.com";
         }
         #endregion
 

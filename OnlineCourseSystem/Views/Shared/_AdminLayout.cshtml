@@ -168,13 +168,31 @@
                     </a>
                 </li>
 
-                <li class="nav-item navItems text-white" id="StudyMaterialsNavId">
-                    <a asp-controller="StudyMaterials" asp-action="Index">
+                <li class="nav-item navItems" id="StudyMaterialsNavId">
+                    <a href="#">
                         <i class="la la-book"></i>
                         <span class="menu-title">
                             Study Materials
                         </span>
                     </a>
+                    <ul class="menu-content">
+                        <li id="AllMaterialsNavId">
+                            <a asp-controller="StudyMaterials" asp-action="Index">
+                                <span class="menu-title">
+                                    All Materials
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="menu-content">
+                        <li id="AllCategoriesNavId">
+                            <a asp-controller="StudyMaterialCategories" asp-action="Index">
+                                <span class="menu-title">
+                                    All Categories
+                                </span>
+                            </a>
+                        </li>
+                    </ul>                  
                 </li>
 
                 <li class="nav-item navItems text-white" id="ServicesTabId">

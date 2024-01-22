@@ -32,10 +32,11 @@
 			<div class="col-md-12">
 				<div class="blog-view">
 					<div class="blog blog-single-post">
-						<h3 class="blog-title">@Model.Title</h3>
-						<object data="@Model.FileUrl" width="100%" height="600">
+						<h3 class="blog-title">@Model.Title</h3>						
+						<object data="@Model.FileUrl" width="100%" height="600" type="application/pdf">
 							@Model.FileUrl
 						</object>
+						
 						<div class="blog-content">
 							@Html.Raw(Model.LongDescription)
 						</div>
