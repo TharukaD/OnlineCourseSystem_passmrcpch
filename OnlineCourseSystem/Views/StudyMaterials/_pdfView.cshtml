@@ -1,0 +1,32 @@
+﻿@using OnlineCourseSystem.ViewModels.StudyMaterial
+@model StudyMaterialViewModel
+
+@{
+    string fileName = Model.Title + ".pdf";
+}
+
+<div id="adobe-dc-view" style="height:600px;">
+    <p>Loading...</p>
+</div>
+
+<script src="https://acrobatservices.adobe.com/view-sdk/viewer.js"></script>
+<script type="text/javascript">
+
+    //--- LocalHost
+    // const domainAddress = "https://localhost:7010"
+    // const clientId = "ece229db642d4d6cbf6370b4f613cb9b"
+
+    //--- Production
+    const domainAddress = "http://passmrcpch.com"
+    const clientId = "25e90835e6a24fe6a3e8bb9855af29f5"
+
+    var pdfPath = domainAddress + '@Model.FileUrl';
+    console.log(pdfPath);
+    document.addEventListener("adobe_dc_view_sdk.ready", function () {
+        var adobeDCView = new AdobeDC.View({ clientId: clientId, divId: "adobe-dc-view" });
+        adobeDCView.previewFile({
+            content: { location: { url: pdfPath } },
+            metaData: { fileName: "@fileName" }
+        }, {});
+    });
+</script>

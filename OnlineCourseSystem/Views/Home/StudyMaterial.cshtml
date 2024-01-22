@@ -2,7 +2,7 @@
 @using OnlineCourseSystem.ViewModels.StudyMaterial
 @model StudyMaterialViewModel
 @{
-    ViewData["Title"] = "Article";
+	ViewData["Title"] = "Study Material";
 }
 
 <!-- Breadcrumb -->
@@ -33,11 +33,16 @@
 				<div class="blog-view">
 					<div class="blog blog-single-post">
 						<h3 class="blog-title">@Model.Title</h3>						
-						@* <object data="@Model.FileUrl" width="100%" height="600" type="application/pdf">
-							@Model.FileUrl
-						</object>*@
-						<iframe src="@Model.FileUrl"
-								width="100%" height="600" frameborder="0"></iframe>
+
+						@if(Model.StudyMaterialTypeName == "Pdf")
+						{
+							<partial name="~/Views/StudyMaterials/_pdfView.cshtml" model="Model" />
+						}
+						else
+						{
+							<iframe src="@Model.FileUrl" width="100%" height="600" frameborder="0"></iframe>
+						}
+												
 						<div class="blog-content">
 							@Html.Raw(Model.LongDescription)
 						</div>
@@ -83,11 +88,3 @@
 	}
 
 </style>
-
-
-@section Scripts{
-	<script>
-
-
-	</script>
-}
