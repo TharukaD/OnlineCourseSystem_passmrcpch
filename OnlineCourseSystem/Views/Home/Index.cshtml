@@ -11,8 +11,8 @@
         <div class="row">
             <div class="col-lg-6">
                 <div class="banner-content aos" data-aos="fade-up">
-                    <h1 class="mt-md-5" id="HomeBannerTitleId">Consult Best Doctors Your Nearby Location.</h1>
-                    <p id="HomeBannerDescriptionId">Feel free to contact us, get better service.</p>
+                    <h1 class="mt-md-5" id="HomeBannerTitleId"></h1>
+                    <p id="HomeBannerDescriptionId"></p>
                     <a asp-controller="Home" asp-action="Courses" style="background-color: #06A5A0;border-color:#06A5A0 !important;" class="btn specialHomeBtn"><span style="margin-right:5px;">Enroll now</span> <i class="fa fa-arrow-right"></i></a>
                 </div>
             </div>
@@ -345,6 +345,8 @@
         $('#HomeBannerSectionId').css({ 'backgroundImage': firstImage, 'background-repeat': 'no-repeat', 'background-size': "cover" });
         $("#HomeBannerTitleId").text(banners[0].title);
         $("#HomeBannerTitleId").css({ 'color': banners[0].textColor });
+        $("#HomeBannerTitleId").css({ 'backdrop-filter': 'blur(5px)' });
+        $("#HomeBannerDescriptionId").css({ 'backdrop-filter': 'blur(5px)' });
 
         function changeBg(pageWidth){
             const index = counter % arrayLength;
@@ -357,9 +359,11 @@
 
             $("#HomeBannerTitleId").text(banners[index].title);
             $("#HomeBannerTitleId").css({ 'color': banners[index].textColor });
+            $("#HomeBannerTitleId").css({ 'backdrop-filter': 'blur(5px)' });
 
             $("#HomeBannerDescriptionId").text(banners[index].description);
             $("#HomeBannerDescriptionId").css({ 'color': banners[index].textColor });
+            $("#HomeBannerDescriptionId").css({ 'backdrop-filter': 'blur(5px)' });
 
             counter += 1;
         }

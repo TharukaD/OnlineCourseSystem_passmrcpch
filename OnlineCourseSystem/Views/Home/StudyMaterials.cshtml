@@ -1,5 +1,5 @@
-﻿@using OnlineCourseSystem.ViewModels.StudyMaterialCategory
-@model IEnumerable<StudyMaterialCategoryViewModel>
+﻿@using OnlineCourseSystem.ViewModels.StudyMaterialTopic
+@model IEnumerable<StudyMaterialTopicTabViewModel>
 @{
 	ViewData["Title"] = "Study Materials";
 }
@@ -29,18 +29,39 @@
 			<div class="col-md-12">
 
 				<div class="row blog-grid-row">
-					@foreach (var category in Model)
-					{
-						<div class="col-lg-4 col-md-6 col-sm-12">
-							<a class="blogLink" asp-action="StudyMaterialsInCategory" asp-controller="Home" asp-route-categoryId="@category.Id">
-								<div class="blog grid-blog" style="background-color:#F1F1F1">
-									<div class="blog-content">
-										<h4><i class="fa fa-folder" style="color:#FAE0AC;"></i> @category.Name</h4>
-									</div>
-								</div>
-							</a>							
-						</div>
-					}
+
+					<ul class="nav nav-pills mb-3 gap-2 d-flex justify-content-center" id="pills-tab" role="tablist">
+                        @foreach (var topic in Model)
+                        {
+                            <li class="nav-item" role="presentation">
+                                <button class="@topic.TabClass" id="@topic.TabId" data-bs-toggle="pill" data-bs-target="@topic.DataTarget" role="tab" aria-controls="@topic.AreaControl" aria-selected="true">@topic.Name</button>
+                            </li>
+                        }
+                    </ul>
+
+                    <div class="tab-content" id="pills-tabContent">
+                        @foreach (var topic in Model)
+                        {
+							<div class="@topic.TabContentClass" id="@topic.AreaControl" role="tabpanel" aria-labelledby="@topic.TabId" tabindex="0">
+								<div class="col-lg-12 row d-flex justify-content-center">
+									@foreach (var category in topic.Categories)
+									{
+										<div class="col-lg-4 col-md-6 col-sm-12">
+											<a class="blogLink" asp-action="StudyMaterialsInCategory" asp-controller="Home" asp-route-categoryId="@category.Id">
+												<div class="blog grid-blog" style="background-color:#F1F1F1">
+													<div class="blog-content">
+														<h4><i class="fa fa-folder" style="color:#FAE0AC;"></i> @category.Name</h4>
+													</div>
+												</div>
+											</a>
+										</div>
+									}
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+					
 				</div>
 		
 			</div>
@@ -89,6 +110,17 @@
 	.blogLink:hover {
 		background-color: yellow;
 	}
+
+	.nav-pills > li > button {
+		color: #4D555F !important;
+		border: 1px solid #06A5A0;
+	}
+
+	.nav-pills > li > button.active {
+		background-color: #06A5A0 !important;
+		color: white !important;
+	}
+
 
 </style>
 

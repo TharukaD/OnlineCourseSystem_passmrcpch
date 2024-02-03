@@ -12,6 +12,7 @@ using OnlineCourseSystem.Services.Inquiry;
 using OnlineCourseSystem.Services.Serivice;
 using OnlineCourseSystem.Services.StudyMaterial;
 using OnlineCourseSystem.Services.StudyMaterialCategory;
+using OnlineCourseSystem.Services.StudyMaterialTopic;
 using OnlineCourseSystem.Services.Tag;
 using OnlineCourseSystem.ViewModels;
 using OnlineCourseSystem.ViewModels.Article;
@@ -23,6 +24,7 @@ using OnlineCourseSystem.ViewModels.Inquiry;
 using OnlineCourseSystem.ViewModels.Service;
 using OnlineCourseSystem.ViewModels.StudyMaterial;
 using OnlineCourseSystem.ViewModels.StudyMaterialCategory;
+using OnlineCourseSystem.ViewModels.StudyMaterialTopic;
 using OnlineCourseSystem.ViewModels.Tag;
 
 namespace OnlineCourseSystem.Controllers
@@ -42,6 +44,7 @@ namespace OnlineCourseSystem.Controllers
 		private IInquiryService _inquiryService;
 		private IStudyMaterialService _studyMaterialService;
 		private IStudyMaterialCategoryService _studyMaterialCategoryService;
+		private IStudyMaterialTopicService _studyMaterialTopicService;
 		private IEmailService _emailService;
 		private readonly IConfiguration _configuration;
 
@@ -58,6 +61,7 @@ namespace OnlineCourseSystem.Controllers
 			IInquiryService inquiryService,
 			IStudyMaterialService studyMaterialService,
 			IStudyMaterialCategoryService studyMaterialCategoryService,
+			IStudyMaterialTopicService studyMaterialTopicService,
 			IEmailService emailService,
 			IConfiguration configuration
 		)
@@ -74,6 +78,7 @@ namespace OnlineCourseSystem.Controllers
 			_inquiryService = inquiryService;
 			_studyMaterialService = studyMaterialService;
 			_studyMaterialCategoryService = studyMaterialCategoryService;
+			_studyMaterialTopicService = studyMaterialTopicService;
 			_emailService = emailService;
 			_configuration = configuration;
 		}
@@ -203,10 +208,52 @@ namespace OnlineCourseSystem.Controllers
 		[HttpGet]
 		public async Task<IActionResult> StudyMaterials()
 		{
-			var categories = await _studyMaterialCategoryService.GetAll();
-			var categoriesList = _mapper.Map<List<StudyMaterialCategoryViewModel>>(categories);
+			int counter = 1;
+			var tabList = new List<StudyMaterialTopicTabViewModel>();
 
-			return View(categoriesList);
+			var categories = await _studyMaterialCategoryService.GetAll();
+			var categoryGroups = categories
+				.Where(r => r.TopicId != null)
+				.GroupBy(c => c.TopicId)
+				.ToList();
+
+			foreach (var categoryGroup in categoryGroups)
+			{
+				string tabId = "pills-tab" + counter;
+
+				var categoryList = new List<StudyMaterialCategoryViewModel>();
+				foreach (var item in categoryGroup)
+				{
+					var category = new StudyMaterialCategoryViewModel()
+					{
+						Id = item.Id,
+						Name = item.Name,
+					};
+					categoryList.Add(category);
+				}
+
+				var viewModel = new StudyMaterialTopicTabViewModel()
+				{
+					Id = categoryGroup.First().TopicId.Value,
+					Name = categoryGroup.First().Topic.Name,
+					Categories = categoryList,
+					TabId = tabId + "-tab",
+					TabClass = "nav-link",
+					TabContentClass = "tab-pane fade",
+					DataTarget = "#" + tabId,
+					AreaControl = tabId,
+				};
+				tabList.Add(viewModel);
+				counter += 1;
+			}
+
+			if (counter >= 1)
+			{
+				tabList[0].TabClass = tabList[0].TabClass + " active";
+				tabList[0].TabContentClass = tabList[0].TabContentClass + " show active";
+			}
+
+			return View(tabList);
 		}
 
 		[HttpGet]

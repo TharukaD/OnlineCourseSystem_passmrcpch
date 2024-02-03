@@ -4,6 +4,7 @@ public interface IStudyMaterialTopicService
 {
     Task<StudyMaterialTopic?> GetById(int id);
     Task<IEnumerable<StudyMaterialTopic>> GetAll();
+    Task<IEnumerable<StudyMaterialTopic>> GetAllWithCategories();
     Task<bool> Add(StudyMaterialTopic category);
     Task<bool> Update(StudyMaterialTopic category);
     Task<bool> Delete(int id);

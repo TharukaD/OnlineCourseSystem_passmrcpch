@@ -90,7 +90,8 @@ public class MappingConfig
             #endregion
 
             #region Study Material Topic
-            config.CreateMap<StudyMaterialTopic, StudyMaterialTopicViewModel>();
+            config.CreateMap<StudyMaterialTopic, StudyMaterialTopicViewModel>()
+                .ForMember(r => r.StudyMaterialCategories, opt => opt.MapFrom(src => src.StudyMaterialCategories.Select(r => new StudyMaterialCategoryViewModel { Id = r.Id, Name = r.Name })));
             config.CreateMap<StudyMaterialTopic, AddEditStudyMaterialTopicViewModel>().ReverseMap();
             #endregion
         });
