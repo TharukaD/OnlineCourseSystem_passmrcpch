@@ -25,6 +25,7 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<StudyMaterialType> StudyMaterialTypes { get; set; }
     public DbSet<StudyMaterial> StudyMaterials { get; set; }
     public DbSet<StudyMaterialCategory> StudyMaterialCategories { get; set; }
+    public DbSet<StudyMaterialTopic> StudyMaterialTopics { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -42,5 +43,6 @@ public class ApplicationDbContext : IdentityDbContext
         modelBuilder.ApplyConfiguration(new StudyMaterialTypeConfiguration());
         modelBuilder.ApplyConfiguration(new StudyMaterialConfiguration());
         modelBuilder.ApplyConfiguration(new StudyMaterialCategoryConfiguration());
+        modelBuilder.ApplyConfiguration(new StudyMaterialTopicConfiguration());
     }
 }

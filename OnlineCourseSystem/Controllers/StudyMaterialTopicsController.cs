@@ -2,31 +2,26 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineCourseSystem.Entities;
-using OnlineCourseSystem.Services.StudyMaterialCategory;
 using OnlineCourseSystem.Services.StudyMaterialTopic;
 using OnlineCourseSystem.ViewModels;
-using OnlineCourseSystem.ViewModels.StudyMaterialCategory;
 using OnlineCourseSystem.ViewModels.StudyMaterialTopic;
 
 namespace OnlineCourseSystem.Controllers
 {
     [Authorize(Roles = "Admin, Teacher")]
-    public class StudyMaterialCategoriesController : Controller
+    public class StudyMaterialTopicsController : Controller
     {
         private IMapper _mapper;
-        private IStudyMaterialCategoryService _studyMaterialCategoryService;
         private IStudyMaterialTopicService _studyMaterialTopicService;
-        private readonly ILogger<StudyMaterialCategoriesController> _logger;
-        public StudyMaterialCategoriesController(
+        private readonly ILogger<StudyMaterialTopicsController> _logger;
+        public StudyMaterialTopicsController(
            IMapper mapper,
-           ILogger<StudyMaterialCategoriesController> logger,
-           IStudyMaterialCategoryService studyMaterialCategoryService,
+           ILogger<StudyMaterialTopicsController> logger,
            IStudyMaterialTopicService studyMaterialTopicService
            )
         {
             _mapper = mapper;
             _logger = logger;
-            _studyMaterialCategoryService = studyMaterialCategoryService;
             _studyMaterialTopicService = studyMaterialTopicService;
         }
 
@@ -34,10 +29,10 @@ namespace OnlineCourseSystem.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            List<StudyMaterialCategoryViewModel>? output = new();
+            List<StudyMaterialTopicViewModel>? output = new();
 
-            var materialCategories = await _studyMaterialCategoryService.GetAll();
-            output = _mapper.Map<List<StudyMaterialCategoryViewModel>>(materialCategories);
+            var materialTopics = await _studyMaterialTopicService.GetAll();
+            output = _mapper.Map<List<StudyMaterialTopicViewModel>>(materialTopics);
 
             return View(output);
         }
@@ -48,18 +43,14 @@ namespace OnlineCourseSystem.Controllers
         [HttpGet]
         public async Task<IActionResult> Add()
         {
-            var topicList = _mapper.Map<List<StudyMaterialTopicViewModel>>(await _studyMaterialTopicService.GetAll());
-
-            var viewModel = new AddEditStudyMaterialCategoryViewModel();
-            viewModel.Initialize(topicList);
-
+            var viewModel = new AddEditStudyMaterialTopicViewModel();
             return PartialView("_AddEdit", viewModel);
         }
         #endregion
 
         #region Add [ HttpPost ]
         [HttpPost]
-        public async Task<IActionResult> Add(AddEditStudyMaterialCategoryViewModel viewModel)
+        public async Task<IActionResult> Add(AddEditStudyMaterialTopicViewModel viewModel)
         {
             try
             {
@@ -74,9 +65,9 @@ namespace OnlineCourseSystem.Controllers
                     currentUser = "UnAuthorized";
                 }
 
-                var material = _mapper.Map<AddEditStudyMaterialCategoryViewModel, StudyMaterialCategory>(viewModel);
+                var topic = _mapper.Map<AddEditStudyMaterialTopicViewModel, StudyMaterialTopic>(viewModel);
 
-                await _studyMaterialCategoryService.Add(material);
+                await _studyMaterialTopicService.Add(topic);
                 return PartialView("_AjaxActionResult", new AjaxActionResult(true, "Successfully added.", "", true));
             }
             catch (Exception ex)
@@ -94,16 +85,14 @@ namespace OnlineCourseSystem.Controllers
         {
             try
             {
-                var materialCategory = await _studyMaterialCategoryService.GetById(id);
+                var materialTopic = await _studyMaterialTopicService.GetById(id);
 
-                if (materialCategory == null)
+                if (materialTopic == null)
                 {
                     return PartialView("_AjaxActionResult", new AjaxActionResult(false, "Study material category not found."));
                 }
 
-                var topicList = _mapper.Map<List<StudyMaterialTopicViewModel>>(await _studyMaterialTopicService.GetAll());
-                var viewModel = _mapper.Map<AddEditStudyMaterialCategoryViewModel>(materialCategory);
-                viewModel.Initialize(topicList);
+                var viewModel = _mapper.Map<AddEditStudyMaterialTopicViewModel>(materialTopic);
 
                 return PartialView("_AddEdit", viewModel);
             }
@@ -117,7 +106,7 @@ namespace OnlineCourseSystem.Controllers
 
         #region Edit [ HttpPost ]
         [HttpPost]
-        public async Task<IActionResult> Edit(AddEditStudyMaterialCategoryViewModel viewModel)
+        public async Task<IActionResult> Edit(AddEditStudyMaterialTopicViewModel viewModel)
         {
             try
             {
@@ -126,10 +115,10 @@ namespace OnlineCourseSystem.Controllers
                     return PartialView("_AjaxActionResult", new AjaxActionResult(false, "Validations failed."));
                 }
 
-                var materialCategoryInDb = await _studyMaterialCategoryService.GetById(viewModel.Id.Value);
-                if (materialCategoryInDb == null)
+                var materialTopicInDb = await _studyMaterialTopicService.GetById(viewModel.Id.Value);
+                if (materialTopicInDb == null)
                 {
-                    return PartialView("_AjaxActionResult", new AjaxActionResult(false, "Study material category not found"));
+                    return PartialView("_AjaxActionResult", new AjaxActionResult(false, "Study material topic not found"));
                 }
 
                 string currentUser = User.Identity.Name;
@@ -138,9 +127,9 @@ namespace OnlineCourseSystem.Controllers
                     currentUser = "UnAuthorized";
                 }
 
-                var materialCategory = _mapper.Map(viewModel, materialCategoryInDb);
+                var materialTopic = _mapper.Map(viewModel, materialTopicInDb);
 
-                await _studyMaterialCategoryService.Update(materialCategory);
+                await _studyMaterialTopicService.Update(materialTopic);
                 return PartialView("_AjaxActionResult", new AjaxActionResult(true, "Successfully saved.", "", true));
             }
             catch (Exception ex)
@@ -156,29 +145,29 @@ namespace OnlineCourseSystem.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            var materialCategory = await _studyMaterialCategoryService.GetById(id);
-            if (materialCategory == null)
+            var materialTopic = await _studyMaterialTopicService.GetById(id);
+            if (materialTopic == null)
             {
-                return PartialView("_AjaxActionResult", new AjaxActionResult(false, "Study material category not found."));
+                return PartialView("_AjaxActionResult", new AjaxActionResult(false, "Study material topic not found."));
             }
-            var viewModel = _mapper.Map<StudyMaterialCategoryViewModel>(materialCategory);
+            var viewModel = _mapper.Map<StudyMaterialTopicViewModel>(materialTopic);
             return PartialView("_Delete", viewModel);
         }
         #endregion
 
         #region Delete [ HttpPost ]
         [HttpPost]
-        public async Task<IActionResult> Delete(StudyMaterialCategoryViewModel viewModel)
+        public async Task<IActionResult> Delete(StudyMaterialTopicViewModel viewModel)
         {
             try
             {
-                var hasStudyMaterial = await _studyMaterialCategoryService.HasAssignedToStudyMaterial(viewModel.Id);
+                var hasStudyMaterial = await _studyMaterialTopicService.HasAssignedToStudyMaterial(viewModel.Id);
                 if (hasStudyMaterial)
                 {
-                    return PartialView("_AjaxActionResult", new AjaxActionResult(false, "Can not delete. Study material already assigned."));
+                    return PartialView("_AjaxActionResult", new AjaxActionResult(false, "Can not delete. Study material category already assigned."));
                 }
 
-                var result = await _studyMaterialCategoryService.Delete(viewModel.Id);
+                var result = await _studyMaterialTopicService.Delete(viewModel.Id);
                 if (result == true)
                 {
                     return PartialView("_AjaxActionResult", new AjaxActionResult(true, "Successfully deleted.", "", true));
@@ -192,6 +181,5 @@ namespace OnlineCourseSystem.Controllers
             }
         }
         #endregion
-
     }
 }

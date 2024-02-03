@@ -1,19 +1,19 @@
 ﻿@using OnlineCourseSystem.ViewModels.StudyMaterial
-@using OnlineCourseSystem.ViewModels.StudyMaterialCategory
+@using OnlineCourseSystem.ViewModels.StudyMaterialTopic
 @using static OnlineCourseSystem.Constants.ModelConstants
-@model IEnumerable<StudyMaterialCategoryViewModel>;
+@model IEnumerable<StudyMaterialTopicViewModel>;
 @{
     Layout = "_AdminLayout";
-    ViewBag.Title = "Study Material Categories";
+    ViewBag.Title = "Study Material Topics";
 }
 
 @section header{
-    <h3 class="content-header-title">Study Material Categories</h3>
+    <h3 class="content-header-title">Study Material Topics</h3>
     <div class="row breadcrumbs-top">
         <div class="breadcrumb-wrapper col-12">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a asp-controller="StudyMaterialCategories" asp-action="Index">Study Material Categories</a>
+                    <a asp-controller="StudyMaterialTopics" asp-action="Index">Study Material Topics</a>
                 </li>
                 <li class="breadcrumb-item">
                     <a>List</a>
@@ -32,7 +32,7 @@
        data-ajax-complete="unblockUI"
        data-toggle="tooltip"
        asp-action="Add"
-       asp-controller="StudyMaterialCategories">
+       asp-controller="StudyMaterialTopics">
        <i class="fa fa-plus-circle" style="margin-right:5px;font-size:17px;"></i>
         New
     </a>
@@ -45,11 +45,10 @@
                 <div class="row ">
                     <div class="col-md-12 ">
                         <div class="table-responsive">
-                            <table class="table align-items-center table-sm " id="StudyMaterialCategoriesTable">
+                            <table class="table align-items-center table-sm " id="StudyMaterialTopicsTable">
                                 <thead>
                                     <tr>
                                         <th>Name</th>
-                                        <th>Topic</th>
                                         <th>Priority</th>
                                         <th class="text-center">Actions</th>
                                     </tr>
@@ -59,16 +58,6 @@
                                     {
                                         <tr>
                                             <td>@category.Name</td>
-                                            <td>
-                                                @if(category.TopicId == null)
-                                                {
-                                                    <span>-</span>
-                                                }
-                                                else
-                                                {
-                                                    <span>@category.TopicName</span>
-                                                }
-                                            </td>
                                             <td>@category.Priority</td>
                                             <td class="text-center">
                                                 <div>
@@ -78,7 +67,7 @@
                                                        data-ajax-complete="unblockUI"
                                                        data-toggle="tooltip"
                                                        asp-action="Edit"
-                                                       asp-controller="StudyMaterialCategories"
+                                                       asp-controller="StudyMaterialTopics"
                                                        asp-route-id="@category.Id">Edit</a>
                                                     <span> | </span>
                                                     <a data-ajax="true"
@@ -87,7 +76,7 @@
                                                         data-ajax-complete="unblockUI"
                                                         data-toggle="tooltip"
                                                         asp-action="Delete"
-                                                        asp-controller="StudyMaterialCategories"
+                                                        asp-controller="StudyMaterialTopics"
                                                         asp-route-id="@category.Id">
                                                         <span class="text-danger">Delete</span>
                                                     </a>
@@ -110,9 +99,9 @@
         $(function () {
 
             $(".navItems").removeClass("active");
-            $("#AllCategoriesNavId").addClass("active");
+            $("#AllTopicsNavId").addClass("active");
 
-            $("#StudyMaterialCategoriesTable").dataTable(
+            $("#StudyMaterialTopicsTable").dataTable(
                 {
                     bLengthChange: true,
                     bPaginate: true,

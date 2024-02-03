@@ -10,6 +10,7 @@ using OnlineCourseSystem.ViewModels.Inquiry;
 using OnlineCourseSystem.ViewModels.Service;
 using OnlineCourseSystem.ViewModels.StudyMaterial;
 using OnlineCourseSystem.ViewModels.StudyMaterialCategory;
+using OnlineCourseSystem.ViewModels.StudyMaterialTopic;
 using OnlineCourseSystem.ViewModels.StudyMaterialType;
 using OnlineCourseSystem.ViewModels.Tag;
 namespace OnlineCourseSystem;
@@ -82,8 +83,15 @@ public class MappingConfig
             #endregion
 
             #region Study Material Category
-            config.CreateMap<StudyMaterialCategory, StudyMaterialCategoryViewModel>();
+            config.CreateMap<StudyMaterialCategory, StudyMaterialCategoryViewModel>()
+                .ForMember(r => r.TopicId, opt => opt.MapFrom(src => src.TopicId))
+                .ForMember(r => r.TopicName, opt => opt.MapFrom(src => src.Topic.Name));
             config.CreateMap<StudyMaterialCategory, AddEditStudyMaterialCategoryViewModel>().ReverseMap();
+            #endregion
+
+            #region Study Material Topic
+            config.CreateMap<StudyMaterialTopic, StudyMaterialTopicViewModel>();
+            config.CreateMap<StudyMaterialTopic, AddEditStudyMaterialTopicViewModel>().ReverseMap();
             #endregion
         });
         return mappingConfig;

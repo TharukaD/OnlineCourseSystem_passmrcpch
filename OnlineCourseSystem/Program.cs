@@ -14,6 +14,7 @@ using OnlineCourseSystem.Services.Inquiry;
 using OnlineCourseSystem.Services.Serivice;
 using OnlineCourseSystem.Services.StudyMaterial;
 using OnlineCourseSystem.Services.StudyMaterialCategory;
+using OnlineCourseSystem.Services.StudyMaterialTopic;
 using OnlineCourseSystem.Services.Tag;
 using VitalCareWeb.Extensions;
 using static OnlineCourseSystem.Constants.ModelConstants;
@@ -49,6 +50,7 @@ builder.Services.AddScoped<IInquiryService, InquiryService>();
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<IStudyMaterialService, StudyMaterialService>();
 builder.Services.AddScoped<IStudyMaterialCategoryService, StudyMaterialCategoryService>();
+builder.Services.AddScoped<IStudyMaterialTopicService, StudyMaterialTopicService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 
 //---- Mapper Configuration
